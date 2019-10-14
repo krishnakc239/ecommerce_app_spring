@@ -10,8 +10,8 @@ public class Role {
     private int id;
     private String role;
 
-    @OneToOne(mappedBy = "role")
-    private User user;
+//    @OneToOne(mappedBy = "role")
+//    private User user;
 
     public int getId() {
         return id;
@@ -29,12 +29,12 @@ public class Role {
         this.role = role;
     }
 
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 }
