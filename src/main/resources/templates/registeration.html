@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{views/common/masterlayout}">
+      layout:decorate="~{common/masterLayout}">
 <html lang="en">
 <head></head>
 <body>
@@ -55,7 +55,7 @@
 
                         <select class="form-control" th:value="${user.role}" name="role" id="role" required="required">
                             <option disabled="disabled" selected="selected" > -- Select user type --</option>
-                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role.role}" ></option>
+                            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}" ></option>
 
                         </select>
                     </div>
