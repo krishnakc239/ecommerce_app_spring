@@ -7,10 +7,11 @@ import javax.persistence.*;
 public class Role {
     @Id
     @GeneratedValue
-    @Column(name = "role_id")
     private int id;
-    @Column(name = "role")
     private String role;
+
+    @OneToOne(mappedBy = "role")
+    private User user;
 
     public int getId() {
         return id;
@@ -29,4 +30,11 @@ public class Role {
     }
 
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
