@@ -47,13 +47,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
         http.authorizeRequests()
-                .antMatchers("/","/login","/signup", "/home", "/index").permitAll().anyRequest().permitAll()
+                .antMatchers("/","/login","/signup","/register", "/home", "/index").permitAll().anyRequest().permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
                 .formLogin()
-                .loginPage("/login").failureUrl("/login?error=true").defaultSuccessUrl("/")
-                .usernameParameter("userName").passwordParameter("password").permitAll()
+                .loginPage("/login")
+                .usernameParameter("username").passwordParameter("password").permitAll()
+                .failureUrl("/login?error=true").defaultSuccessUrl("/")
 //                .loginProcessingUrl("/users/login")
 //                .successForwardUrl("/index")
 //                .failureForwardUrl("/error")
