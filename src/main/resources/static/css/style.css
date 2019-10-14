@@ -73,7 +73,7 @@ body { font-family:Arial, Helvetica, sans-serif; }
     text-align: center;
 }
 .site-branding-area{
-    background: azure;
+    background: floralwhite;
 
 }
 .mainmenu-area {background: none repeat scroll 0 0 #fbfbfb;
@@ -89,7 +89,7 @@ z-index: 999;}
     margin: 20px 0;font-weight: 400;
 }
 .logo h1 a {
-    color: deepskyblue;
+    color: blue;
     text-shadow: 3px 2px red;
 }
 .logo h1 a:hover {text-decoration: none;opacity: .7}
@@ -115,7 +115,7 @@ z-index: 999;}
     font-weight: 700;
 }
 .product-count {
-    background: none repeat scroll 0 0 #5a88ca;
+    background: none repeat scroll 0 0 sandybrown;
     border-radius: 50%;
     color: #fff;
     display: inline-block;
@@ -556,7 +556,8 @@ z-index: 999;}
 .footer-top-area {
     background: none repeat scroll 0 0 #333;
     color: #999;
-    padding: 20px 0 180px;
+    padding: 10px 0 180px;
+    margin-top:20px;
 }
 
 
