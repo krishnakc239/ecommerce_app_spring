@@ -39,9 +39,8 @@ public class User {
 //    @Column(name = "active", nullable = false)
     private int active;
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Product> productList;
@@ -103,29 +102,7 @@ public class User {
         this.active = active;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
-
-//    public Collection<Post> getPosts() {
-//        return posts;
-//    }
-//
-//    public void setPosts(Collection<Post> posts) {
-//        this.posts = posts;
-//    }
-//
-//    public Account getAccount() {
-//        return account;
-//    }
-//
-//    public void setAccount(Account account) {
-//        this.account = account;
-//    }
 //
 //    public List<Payment> getPayments() {
 //        return payments;
@@ -146,7 +123,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", active=" + active +
-                ", roles=" + roles +
+                ", role=" + role +
                 '}';
     }
 
@@ -164,5 +141,13 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
