@@ -1,6 +1,10 @@
 package com.edu.mum.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,33 +17,34 @@ public class User {
     private Long id;
 
 //    @Column(name = "email", unique = true, nullable = false)
-//    @Email(message = "*Please provide a valid Email")
-//    @NotBlank(message = "*Please provide an email")
+    @Email(message = "*Please provide a valid Email")
+    @NotBlank(message = "*Please provide an email")
     private String email;
 
 //    @Column(name = "password", nullable = false)
 //    @Length(min = 5, message = "*Your password must have at least 5 characters")
-//    @NotBlank(message = "*Please provide your password")
+    @NotBlank(message = "*Please provide your password")
 //    @JsonIgnore
     private String password;
 
 //    @Column(name = "username", nullable = false, unique = true)
-//    @Length(min = 5, message = "*Your username must have at least 5 characters")
-//    @NotBlank(message = "*Please enter your username")
+    @Length(min = 3, message = "*Your username must have at least 3 characters")
+    @NotBlank(message = "*Please enter your username")
     private String userName;
 
 //    @Column(name = "first_name")
-//    @org.hibernate.validator.constraints.NotEmpty(message = "*Please provide your name")
+    @NotBlank(message = "*Please enter your first name")
     private String firstName;
 
 //    @Column(name = "last_name")
-//    @NotBlank(message = "*Please provide your last name")
+    @NotBlank(message = "*Please provide your last name")
     private String lastName;
 
 //    @Column(name = "active", nullable = false)
     private int active;
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
