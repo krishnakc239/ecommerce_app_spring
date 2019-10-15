@@ -20,31 +20,22 @@
 <!--                <div class="container">-->
                     <div class="row">
                         <div class="row">
-                            <!--					<div class="col-sm">-->
-                            <!--&lt;!&ndash;						<p></p>&ndash;&gt;-->
-                            <!--&lt;!&ndash;						<p></p>&ndash;&gt;-->
-                            <!--						<form th:action="@{/searchProduct}" method="get" class="input-group pull-left">-->
-                            <!--							<input type="text" class="form-control pull-left" name="searchParameter" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">-->
-                            <!--							<input type="submit" class="input-group-append pull-right" value="Search" />-->
-                            <!--						</form>-->
-                            <!--					</div>-->
+<!--                            search bar  -->
                             <div class="col-md-6">
-                                <div class="input-group">
-                                    <input class="form-control py-2" type="search" value="search" id="example-search-input">
+                                <form class="input-group" th:action="@{/searchProduct}" method="get">
+                                    <input class="py-2" name="searchParameter" type="search" value="search" id="example-search-input">
                                     <span class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button">
+                                        <button class="btn btn-outline-secondary" type="submit">
                                             <i class="fa fa-search"></i>
                                         </button>
                                      </span>
-                                </div>
+                                </form>
                             </div>
-<!--                            <div class="col-sm">-->
-
-<!--                            </div>-->
-
+<!--                             add new product -->
                             <div class="col-md-6">
-                                <a class="" th:href="@{/create}"><h3>Add Product</h3></a>
+                                    <a th:href="@{/create}" class="pull-right"><h3>Add Product</h3></a>
                             </div>
+
                         </div>
                         <div class="row">
                             <div class="alert alert-info" th:if="${message}" th:utext="${message}"></div>
