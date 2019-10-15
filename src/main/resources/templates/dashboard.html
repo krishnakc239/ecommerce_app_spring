@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	   layout:decorate="~{common/masterLayout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="ISO-8859-1">
+
+<title>Dashboard</title>
+</head>
+<body>
+	<th:block layout:fragment="content">
+		<div class="container">
+		  <div class="row">
+
+			  <div th:insert="fragment/sidebar :: sidebar">
+
+			  </div>
+			<div class="col-md-9">
+
+			</div>
+			<!--			  <div class="column">-->
+<!--			    <div class="card" sec:authorize="hasRole('ROLE_ADMIN')">-->
+<!--			      <h3 class="tags">Total Blogs</h3>-->
+<!--			      <p>Published : <b th:text="${''}"></b></p>-->
+<!--			      <p>Under Review : <b th:text="${''}"></b></p>-->
+<!--			    </div>-->
+<!--			    <div class="card" sec:authorize="hasRole('ROLE_SELLER')">-->
+<!--			      <h3 class="tags">Your Blogs</h3>-->
+<!--			      <p>Published : <b th:text="${''}"></b></p>-->
+<!--			      <p>Under Review : <b th:text="${''}"></b></p>-->
+<!--			    </div>-->
+<!--			  </div>-->
+			
+<!--			  <div class="column">-->
+<!--			    <div class="card" sec:authorize="hasRole('ROLE_ADMIN')">-->
+<!--			      <h3 class="tags">Rewards Given</h3>-->
+<!--			      <p>Post Count : <b th:text="${''}"></b></p>-->
+<!--			      <p>Amount : <b th:text="${''}"></b></p>-->
+<!--			    </div>-->
+<!--			    <div class="card" sec:authorize="hasRole('ROLE_SELLER')">-->
+<!--			      <h3 class="tags">You Earned</h3>-->
+<!--			      <p>From Post : <b th:text="${''}"></b></p>-->
+<!--			      <p>Amount : <b th:text="${''}"></b></p>-->
+<!--			    </div>-->
+<!--			  </div>-->
+			  
+<!--			  <div class="column">-->
+<!--			    <div class="card" sec:authorize="hasRole('ROLE_ADMIN')">-->
+<!--			      <h3 class="tags">Claims</h3>-->
+<!--			      <p>Total : <b th:text="${''}"></b></p>-->
+<!--			      <p>Pending : <b th:text="${''}"></b></p>-->
+<!--			    </div>-->
+<!--			    <div class="card" sec:authorize="hasRole('ROLE_BUYER')">-->
+<!--			      <h3 class="tags">Your Claims</h3>-->
+<!--			      <p>Total : <b th:text="${''}"></b></p>-->
+<!--			      <p>Pending : <b th:text="${''}"></b></p>-->
+<!--			    </div>-->
+<!--			  </div>-->
+<!--		</div>-->
+		</div>
+		</div>
+	</th:block>
+	
+</body>
+</html>
