@@ -71,6 +71,7 @@ public class LoginController {
             modelAndView.setViewName("registeration");
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setActive(1);
             userService.create(user);
             System.out.println("user :"+user +" registered !!!!!");
             modelAndView.addObject("roles",roleService.findRoles());
