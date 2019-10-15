@@ -39,7 +39,7 @@ public class LoginController {
 //        System.out.println("auth =============="+ auth);
         if ( (auth instanceof AnonymousAuthenticationToken) ) {
             System.out.println("ins of anonymous user");
-            return "login";
+            return "user/login";
         } else {
             return "redirect:/";
         }
@@ -50,7 +50,7 @@ public class LoginController {
         System.out.println(roleService.findRoles());
         model.addAttribute("roles",roleService.findRoles());
 
-        return "registeration";
+        return "user/registeration";
     }
 
     @PostMapping("/register")
@@ -68,7 +68,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             System.out.println("registraion form has errors !!!!!!!!!!!!!");
             modelAndView.addObject("roles",roleService.findRoles());
-            modelAndView.setViewName("registeration");
+            modelAndView.setViewName("user/registeration");
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActive(1);
@@ -77,7 +77,7 @@ public class LoginController {
             modelAndView.addObject("roles",roleService.findRoles());
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
-            modelAndView.setViewName("registeration");
+            modelAndView.setViewName("user/registeration");
 
         }
         return modelAndView;
