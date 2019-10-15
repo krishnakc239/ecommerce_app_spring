@@ -115,9 +115,9 @@ z-index: 999;}
     font-weight: 700;
 }
 .product-count {
-    background: none repeat scroll 0 0 sandybrown;
+    background: none repeat scroll 0 0 navajowhite;
     border-radius: 50%;
-    color: #fff;
+    color: blue;
     display: inline-block;
     font-size: 10px;
     height: 20px;
@@ -1130,4 +1130,67 @@ div.cart-collaterals ul.products li.product:hover .add_to_cart_button{background
 
 .pagination > li > a, .pagination > li > span {
   color: #5a88ca;
+}
+
+/**/
+/* sidebar css */
+.list-group.panel > span .list-group-item-success, .list-group.panel > .list-group-item-success {
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background: #c9302c;
+    color: #ffffff;
+}
+/* end sidebar */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* Float four columns side by side */
+/*.column {*/
+/*    float: left;*/
+/*    width: 20%;*/
+/*    padding: 0 10px;*/
+/*}*/
+
+/* Remove extra left and right margins, due to padding */
+/*.row {margin: 0 -5px;}*/
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*!* Responsive columns *!*/
+/*@media screen and (max-width: 600px) {*/
+/*    .column {*/
+/*        width: 100%;*/
+/*        display: block;*/
+/*        margin-bottom: 20px;*/
+/*    }*/
+/*}*/
+
+/* Style the counter cards */
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-color: #f1f1f1;
+}
+.card p {
+    /* color: #21b75f; */
+    font-size: 20px;
+    margin-bottom: unset;
+}
+
+h3.tags
+{
+    background: #1abc9c;
+    border-radius: 2px;
+    color: #f5f5f5;
+    font-weight: bold;
+    padding: 2px 4px;
 }
