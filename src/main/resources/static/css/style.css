@@ -89,8 +89,8 @@ z-index: 999;}
     margin: 20px 0;font-weight: 400;
 }
 .logo h1 a {
-    color: blue;
-    text-shadow: 3px 2px red;
+    color: darkred;
+    text-shadow: 3px 2px saddlebrown;
 }
 .logo h1 a:hover {text-decoration: none;opacity: .7}
 .logo h1 a span {
@@ -105,10 +105,10 @@ z-index: 999;}
     position: relative;
 }
 .shopping-item a {
-    color: blue;
+    color: darkred;
 }
 .shopping-item span{
-    color: blue;
+    color: red;
 }
 .cart-amunt {
     color: #5a88ca;
@@ -134,8 +134,8 @@ z-index: 999;}
 
 
 .shopping-item:hover {
-    background: none repeat scroll 0 0 #5a88ca;
-    border-color: #5a88ca;
+    background: none repeat scroll 0 0 firebrick;
+    border-color: firebrick;
 }
 .shopping-item:hover a {
     color: #fff;text-decoration: none
@@ -154,7 +154,7 @@ z-index: 999;}
     padding: 20px;
 }
 
-.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {background: #5a88ca; color:#FFF;}
+.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {background:firebrick ; color:#FFF;}
 .mainmenu-area .nav > li > a:focus {color: #FFF;}
 
 .slider-area { width:80%; position:relative; margin:0 auto; padding:5px;}
