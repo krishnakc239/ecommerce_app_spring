@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="col-md-3" th:fragment="sidebar">
+    <div id="MainMenu">
+        <div class="list-group panel">
+            <a href="#" th:href="@{/productList}" class="list-group-item list-group-item-success">Product List</a>
+            <!--		          <a href="#demo" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">Post Management <i class="fa fa-caret-down"></i></a>-->
+            <!--		          <div class="collapse" id="demo">-->
+            <a href="#" class="list-group-item list-group-item-success">Reviews</a>
+            <a href="#" class="list-group-item list-group-item-success">Orders</a>
+            <a href="#" class="list-group-item list-group-item-success">Payments</a>
+            <!--		          </div>-->
+            <span sec:authorize="isAuthenticated()">
+		          <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="#demo1" class="list-group-item list-group-item-success">
+<!--		          <div class="collapse" id="demo1">-->
+		            <a href="#" class="list-group-item">List User</a>
+				  </a>
+                <!--		          </div>-->
+		          </span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
