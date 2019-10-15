@@ -48,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/","/login","/signup","/register", "/home", "/index").permitAll().anyRequest().permitAll()
+                .antMatchers("/dashboard").hasAnyRole("ADMIN","SELLER")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
@@ -64,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
-//                .accessDeniedPage("/error/403")
+                .accessDeniedPage("/error/403")
         ;
     }
 
