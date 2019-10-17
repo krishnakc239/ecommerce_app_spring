@@ -47,8 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
         http.authorizeRequests()
-                .antMatchers("/","/login","/signup","/register", "/home", "/index").permitAll().anyRequest().permitAll()
-                .antMatchers("/dashboard").hasAnyRole("ADMIN","SELLER")
+                .antMatchers("/","/login","/signup","/register", "/home/index").permitAll()
+                .antMatchers("/dashboard/","/productList").hasAnyRole("ADMIN","SELLER")
+                .antMatchers("/product/**").hasRole("SELLER")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
