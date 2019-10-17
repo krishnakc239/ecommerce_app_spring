@@ -23,7 +23,6 @@ public class Product {
 
     private int quantity =1;
 
-
     private String coverImage;
     @NotBlank(message = "Please provide the product description")
     private String description;
