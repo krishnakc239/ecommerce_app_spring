@@ -23,23 +23,25 @@
 <!--                            search bar  -->
                             <div class="col-md-6">
                                 <form class="input-group" th:action="@{/searchProduct}" method="get">
-                                    <input class="py-2" name="searchParameter" type="search" value="search" id="example-search-input">
-                                    <span class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="submit">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                     </span>
+<!--                                    <input name="searchParameter" type="search" value="search" id="example-search-input">-->
+<!--                                    <span>-->
+<!--                                        <input  type="button">-->
+<!--                                            <i class="fa fa-search"></i>-->
+<!--                                        </input>-->
+<!--                                     </span>-->
+                                    <input name="searchParameter" type="search" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-search"></span> Search
+                                    </input>
                                 </form>
                             </div>
 <!--                             add new product -->
                             <div class="col-md-6">
-                                    <a th:href="@{/create}" class="pull-right"><h3>Add Product</h3></a>
+                                    <a th:href="@{/product/create}" class="pull-right"><h3>Add Product</h3></a>
                             </div>
 
                         </div>
                         <div class="row">
                             <div class="alert alert-info" th:if="${message}" th:utext="${message}"></div>
-
                             <!-- <div class="page-title pull-left" th:if="${#authentication.getName() != null}" th:text="My Posts List"></div>-->
                             <table class="table table-hover">
                                 <thead>
@@ -62,7 +64,7 @@
 
                                 <tbody>
                                 <tr th:each="p,i : ${pager.pagerObjects}">
-                                    <div sec:authorize="hasAuthority('ROLE_SELLER')">
+                                    <div sec:authorize="hasAuthority('ROLE_SELLER')" th:if="${#authentication.name == p.user.userName}">
                                         <!---->
                                         <td th:text="${i.count}"></td>
                                         <td th:text="${p.name}"></td>
@@ -73,100 +75,9 @@
                                         <td th:text="${p.price}"></td>
                                         <td th:text="${p.quantity}"></td>
                                         <td th:text="${p.coverImage}"></td>
-
-                                        <!--							&lt;!&ndash;			<td th:text="${p.body}"></td>&ndash;&gt;-->
-                                        <!--							<td th:text="${#dates.format(p.createDate, 'dd-MMM-yyyy')}"></td>-->
-                                        <!--							<td><span th:if="${p.user}" th:remove="tag"> &lt;!&ndash; <i>by</i> &ndash;&gt;-->
-                                        <!--										<span th:text="${p.user.firstName != null ? p.user.firstName+', '+p.user.lastName : p.user.username}">Default Author</span>-->
-                                        <!--									    </span>-->
-                                        <!--							</td>-->
-                                        <!--							<td th:text="${#numbers.formatDecimal(avgRatingMap.get(p.id), 1, 'DEFAULT', 2, 'DEFAULT')}">-->
-                                        <!--								&lt;!&ndash;	<p th:each="r: ${p.reviews}">&ndash;&gt; &lt;!&ndash;<a th:text="${p.id == r.post.id ? #aggregates.avg(r.rating)}"></a>&ndash;&gt;-->
-                                        <!--								&lt;!&ndash; </p> &ndash;&gt;-->
-                                        <!--							</td>-->
-                                        <!--							&lt;!&ndash; <td th:text="${}"></td>&ndash;&gt;-->
-                                        <!--							<td th:text="${#lists.size(p.reviews)}"></td>-->
-                                        <!--							<td class="text-center" sec:authorize="isAuthenticated()">-->
-                                        <!--								<div sec:authorize="hasAuthority('ROLE_ADMIN')">-->
-                                        <!--									&lt;!&ndash; <form th:action="@{/posts/setStatus/{id}(id=${p.id})}">&ndash;&gt;-->
-                                        <!--									&lt;!&ndash;	<button class="btn " th:classappend="${p.status}? 'btn-success': 'btn-warning'" th:text="${p.status} ? 'Pubished':'Publish'"></button>&ndash;&gt;-->
-                                        <!--									&lt;!&ndash; </form>	&ndash;&gt;-->
-                                        <!--									<form th:action="@{/posts/view/{id}(id=${p.id})}">-->
-                                        <!--										<button class="btn btn-danger" th:if="${p.status == false}"-->
-                                        <!--												th:text="'Review'"></button>-->
-                                        <!--									</form>-->
-                                        <!--									<button class="btn btn-success" th:if="${p.status}" th:text="'Published'"></button>-->
-                                        <!--								</div>-->
-                                        <!--								<div sec:authorize="hasAuthority('ROLE_USER')">-->
-                                        <!--									<a th:text="${p.status} ? 'Published':'Under Review'"></a>-->
-                                        <!--								</div>-->
-                                        <!--							</td>-->
-                                        <!--							<td class="text-center" sec:authorize="hasAuthority('ROLE_ADMIN')">-->
-                                        <!--								<a th:href="@{'/posts/edit/' + ${p.id}}"><span class="fa fa-edit"></span></a> &lt;!&ndash; <a href="#" th:href="@{/posts/edit/{id}/(id=${p.id})}"><span class="fa fa-edit"></span></a>&ndash;&gt;-->
-                                        <!--								<a data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${p.id }"><span-->
-                                        <!--										class="glyphicon glyphicon-trash"></span></a>-->
-                                        <!--&lt;!&ndash;&ndash;&gt;-->
-                                        <!--								<div class="modal modal-warning fade in"-->
-                                        <!--									 th:id="modal-warning+${p.id }">-->
-                                        <!--									<div class="modal-dialog">-->
-                                        <!--										<div class="modal-content">-->
-                                        <!--											<div class="modal-header">-->
-                                        <!--												<button type="button" class="close" data-dismiss="modal"-->
-                                        <!--														aria-label="Close">-->
-                                        <!--													<span aria-hidden="true">×</span>-->
-                                        <!--												</button>-->
-                                        <!--												<h5 class="modal-title">Delete Post</h5>-->
-                                        <!--											</div>-->
-                                        <!--											<div class="modal-body">-->
-                                        <!--												<h3>Are you sure want to delete this Post?</h3>-->
-                                        <!--											</div>-->
-                                        <!--											<div class="modal-footer">-->
-                                        <!--												<button type="button"-->
-                                        <!--														class="btn btn-outline pull-left btn-warning"-->
-                                        <!--														data-dismiss="modal">Close</button>-->
-                                        <!--												<a type="button" class="btn btn-outline"-->
-                                        <!--												   th:href="@{/posts/delete/{id}(id=${p.id})}"><i-->
-                                        <!--														class="fa fa-check"></i>&nbsp;Yes</a>-->
-                                        <!--											</div>-->
-                                        <!--										</div>-->
-                                        <!--									</div>-->
-                                        <!--								</div>-->
-                                        <!--							</td>-->
-                                        <!--						</div>-->
-                                        <!--&lt;!&ndash;&ndash;&gt;-->
-                                        <!--						&lt;!&ndash; show respective user with thier posts only &ndash;&gt;-->
-                                        <!--						<div sec:authorize="hasAuthority('ROLE_USER')" th:if="${p.status and #authentication.name == p.user.username}">-->
-                                        <!--&lt;!&ndash;&ndash;&gt;-->
-                                        <!--							<td th:text="${i.count}"></td>-->
-                                        <!--							<td th:text="${p.title}"></td>-->
-                                        <!--							<td th:text="${p.category != null ? p.category.categoryName : 'General'}"></td>-->
-                                        <!--							&lt;!&ndash; <td th:text="${p.body}"></td>&ndash;&gt;-->
-                                        <!--							<td th:text="${#dates.format(p.createDate, 'dd-MMM-yyyy')}"></td>-->
-                                        <!--							<td><span th:if="${p.user}" th:remove="tag"> &lt;!&ndash; <i>by</i>&ndash;&gt;-->
-                                        <!--										<span th:text="${p.user.firstName != null ? p.user.firstName+', '+p.user.lastName : p.user.username}">Default Author</span>-->
-                                        <!--										</span>-->
-                                        <!--							</td>-->
-                                        <!--							<td th:text="${#numbers.formatDecimal(avgRatingMap.get(p.id), 1, 'DEFAULT', 2, 'DEFAULT')}">-->
-                                        <!--								&lt;!&ndash; <td th:text="${}"></td>&ndash;&gt;-->
-                                        <!--							<td th:text="${#lists.size(p.reviews)}"></td>-->
-                                        <!--							<td class="text-center" sec:authorize="isAuthenticated()">-->
-                                        <!--								<div sec:authorize="hasAuthority('ROLE_ADMIN')">-->
-                                        <!--									&lt;!&ndash; <form th:action="@{/posts/setStatus/{id}(id=${p.id})}">&ndash;&gt;-->
-                                        <!--									&lt;!&ndash;	<button class="btn " th:classappend="${p.status}? 'btn-success': 'btn-warning'" th:text="${p.status} ? 'Pubished':'Publish'"></button>&ndash;&gt;-->
-                                        <!--									&lt;!&ndash; </form>	&ndash;&gt;-->
-                                        <!--									<form th:action="@{/posts/view/{id}(id=${p.id})}">-->
-                                        <!--										<button class="btn btn-danger" th:if="${p.status == false}" th:text="'Review'"></button>-->
-                                        <!--									</form>-->
-                                        <!--									<button class="btn btn-success" th:if="${p.status}" th:text="'Published'"></button>-->
-                                        <!--								</div>-->
-                                        <!--								<div sec:authorize="hasAuthority('ROLE_USER')">-->
-                                        <!--									<a th:text="${p.status} ? 'Published':'Under Review'"></a>-->
-                                        <!--								</div>-->
-                                        <!--&lt;!&ndash;&ndash;&gt;-->
-                                        <!--							</td>-->
                                         <td class="text-center" sec:authorize="hasAuthority('ROLE_SELLER')">
                                             <!--								<a th:href="@{'/edit/' + ${p.id}}"><span class="fa fa-edit"></span><</a>-->
-                                            <a href="#" th:href="@{/edit/{id}/(id=${p.id})}"><span
+                                            <a href="#" th:href="@{/product/edit/{id}/(id=${p.id})}"><span
                                                     class="fa fa-edit"></span></a>
 
                                             <a data-toggle="modal" data-target="#modal-warning"
@@ -193,7 +104,7 @@
                                                                     data-dismiss="modal">Close
                                                             </button>
                                                             <a type="button" class="btn btn-outline"
-                                                               th:href="@{/delete/{id}(id=${p.id})}"><i
+                                                               th:href="@{/product/delete/{id}(id=${p.id})}"><i
                                                                     class="fa fa-check"></i>&nbsp;Yes</a>
                                                         </div>
                                                     </div>

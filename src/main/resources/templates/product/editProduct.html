@@ -1,9 +1,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	  layout:decorate="~{common/masterLayout}">
+	  layout:decorate="~{common/masterLayout}" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Add Product</title>
+	<title>Edit Product</title>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -12,12 +11,15 @@
 
 			<div th:insert="fragment/sidebar :: sidebar"></div>
 			<div class="col-md-9">
-				<form action="#" th:action="@{/product/create}" th:object="${product}" method="post" enctype="multipart/form-data" class="form col-md-7 col-md-offset-1">
-                    <h4><a href="#" >Add Product</a></h4>
+				<form action="#" th:action="@{/product/edit}" th:object="${product}" method="post" enctype="multipart/form-data" class="form col-md-7 col-md-offset-1">
+                    <h4><a href="#" >Edit Product</a></h4>
 					<div class="form-group">
 						<div th:class="${successMessage} ? 'alert alert-success' : ''" th:text="${successMessage}"></div>
 					</div><!-- Success message -->
 					<div class="form-group">
+<!--						include some hidden fields to remove duplicate row save in database-->
+						<input type="hidden" th:field ="*{id}">
+						<input type="hidden" th:field ="*{user.id}">
 						<label>Name</label>
 						<input type="text" th:field="*{name}" th:class="${#fields.hasErrors('name') ? 'form-control is-invalid' : 'form-control'}" />
 						<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
@@ -36,20 +38,23 @@
 					</div>
 					<div class="form-group">
 						<label>Price</label>
-						<input type="text" th:field="*{price}" th:class="${#fields.hasErrors('price') ? 'form-control is-invalid' : 'form-control'}" ></input>
+						<input type="text" th:field="*{price}" th:class="${#fields.hasErrors('price') ? 'form-control is-invalid' : 'form-control'}" />
 						<div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="invalid-feedback"></div>
 					</div>
 					<div class="form-group">
 						<label>Code</label>
-						<input type="text" th:field="*{code}" th:class="${#fields.hasErrors('code') ? 'form-control is-invalid' : 'form-control'}" ></input>
+						<input type="text" th:field="*{code}" th:class="${#fields.hasErrors('code') ? 'form-control is-invalid' : 'form-control'}" />
 						<div th:if="${#fields.hasErrors('code')}" th:errors="*{code}" class="invalid-feedback"></div>
-					</div><!-- Post Content -->
+					</div>
+					<!-- Post Content -->
 					<div class="form-group">
-                        <div th:if="${#fields.hasErrors('coverImage')}" th:errors="*{coverImage}" class="invalid-feedback"></div>
-                        Select Product Image: <input type="file" name="file">
+						Select Product Image: <input type="file" name="file">
+						<p th:field="*{coverImage}" th:text="*{coverImage}" />
+						<input type="hidden" th:field ="*{coverImage}" />
+
 					</div>
 					<div class="form-group clearfix">
-						<input type="submit" class="btn mybtn" value="Add Product" />
+						<input type="submit" class="btn mybtn" value="Update Product" />
 					</div><!-- Submit Button -->
 
 				</form>
