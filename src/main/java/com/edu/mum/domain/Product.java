@@ -20,8 +20,8 @@ public class Product {
 
     @NotNull(message = "Product price is required")
     private Double price;
-
-    private int quantity =1;
+    @Column(columnDefinition = "integer default 1")
+    private int quantity ;
 
     private String coverImage;
     @NotBlank(message = "Please provide the product description")
