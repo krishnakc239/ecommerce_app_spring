@@ -265,7 +265,10 @@ z-index: 999;}
 .block-slider .caption-group .caption{
 
 }
-
+.mybtn{
+    background: darkred;
+    color: white;
+}
 /*----------------------
 [10. Block top seller ]
 ------------------------*/
@@ -556,7 +559,7 @@ z-index: 999;}
 .footer-top-area {
     background: none repeat scroll 0 0 #333;
     color: #999;
-    padding: 10px 0 180px;
+    padding: 10px 0 20px;
     margin-top:20px;
 }
 
