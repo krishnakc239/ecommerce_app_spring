@@ -43,6 +43,15 @@ public class User {
 //    @Column(name = "active", nullable = false)
     private int active;
 
+    private boolean status;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "relation",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "following_id"))
+    private List<User> followings;
+
+
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
@@ -154,5 +163,21 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public List<User> getFollowings() {
+        return followings;
+    }
+
+    public void setFollowings(List<User> followings) {
+        this.followings = followings;
     }
 }
