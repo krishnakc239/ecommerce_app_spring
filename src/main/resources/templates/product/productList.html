@@ -23,20 +23,15 @@
 <!--                            search bar  -->
                             <div class="col-md-6">
                                 <form class="input-group" th:action="@{/searchProduct}" method="get">
-<!--                                    <input name="searchParameter" type="search" value="search" id="example-search-input">-->
-<!--                                    <span>-->
-<!--                                        <input  type="button">-->
-<!--                                            <i class="fa fa-search"></i>-->
-<!--                                        </input>-->
-<!--                                     </span>-->
                                     <input name="searchParameter" type="search" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-search"></span> Search
+                                        <span class="glyphicon glyphicon-search"></span>Search
                                     </input>
                                 </form>
                             </div>
 <!--                             add new product -->
                             <div class="col-md-6">
-                                    <a th:href="@{/product/create}" class="pull-right"><h3>Add Product</h3></a>
+                                    <a th:if="${!user.status}" th:text="${'Approval under going to add product'}"></a>
+                                    <a th:href="@{/product/create}" class="pull-right" th:if="${user.status}"><h3>Add Product</h3></a>
                             </div>
 
                         </div>
@@ -64,7 +59,6 @@
 
                                 <tbody>
                                 <tr th:each="p,i : ${pager.pagerObjects}">
-                                    <div sec:authorize="hasAuthority('ROLE_SELLER')" th:if="${#authentication.name == p.user.userName}">
                                         <!---->
                                         <td th:text="${i.count}"></td>
                                         <td th:text="${p.name}"></td>
@@ -111,7 +105,6 @@
                                                 </div>
                                             </div>
                                         </td>
-                                    </div>
                                 </tr>
                                 </tbody>
                             </table>

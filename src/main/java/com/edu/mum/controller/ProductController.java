@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,10 +82,15 @@ public class ProductController {
     }
 
     @GetMapping("/productList")
-    public String index(@RequestParam(defaultValue = "0") int page, Model model) {
+    public String index(@RequestParam(defaultValue = "0") int page, Model model, Principal principal) {
         Page<Product> products = this.productService.findAllProducts(page);
         Pager pager = new Pager(products);
         model.addAttribute("pager", pager);
+
+        //store current logged in user in "user" object
+        UserDetails userDetails = (UserDetails)((Authentication)principal).getPrincipal();
+        Optional<User> user = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", user.get());
         return "product/productList";
     }
 
