@@ -30,7 +30,7 @@ public  class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findAllProducts(int page) {
-        return productRepository.findAll(new PageRequest(subtractPageByOne(page),5));
+        return productRepository.findAll(new PageRequest(subtractPageByOne(page),6));
     }
 
     @Override
