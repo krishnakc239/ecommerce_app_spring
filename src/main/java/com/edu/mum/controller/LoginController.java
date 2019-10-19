@@ -72,7 +72,7 @@ public class LoginController {
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setActive(1);
-            userService.create(user);
+            userService.save(user);
             System.out.println("user :"+user +" registered !!!!!");
             modelAndView.addObject("roles",roleService.findRoles());
             modelAndView.addObject("successMessage", "User has been registered successfully");

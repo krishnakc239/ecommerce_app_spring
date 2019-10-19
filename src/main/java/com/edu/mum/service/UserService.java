@@ -12,7 +12,7 @@ public interface UserService {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     User findById(Long id);
-    User create(User user);
+    User save(User user);
     Page<User> findAllUsers(int page);
     List<User> findAll();
     User edit(User user);

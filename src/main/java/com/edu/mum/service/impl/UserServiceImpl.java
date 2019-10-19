@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findAll();
     }
     @Override
-    public User create(User user) {
+    public User save(User user) {
 //        // Encode plaintext password
 //        user.setPassword(user.getPassword());
 //        user.setActive(1);

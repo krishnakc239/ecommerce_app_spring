@@ -64,10 +64,18 @@ public class UserController {
         updatedUser.setFirstName(user.getFirstName());
         updatedUser.setLastName(user.getLastName());
         updatedUser.setEmail(user.getEmail());
-        userService.create(updatedUser);
+        userService.save(updatedUser);
         model.addAttribute("successMessage", "User has been updated.");
         model.addAttribute("user", updatedUser);
         return "user/edit";
+    }
+
+    @GetMapping("user/approve/{id}")
+    public String approveSellerForAddProduct(@PathVariable Long id){
+        User seller = userService.findById(id);
+        seller.setStatus(true);
+        userService.save(seller);
+        return "redirect:/sellerList";
     }
 
 
