@@ -13,7 +13,7 @@ public interface UserService {
     Optional<User> findByEmail(String email);
     User findById(Long id);
     User create(User user);
-    Page<User> findAll(Pageable pageable);
+    Page<User> findAllUsers(int page);
     List<User> findAll();
     User edit(User user);
     void deleteById(Long id);
