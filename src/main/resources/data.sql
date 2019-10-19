@@ -1,8 +1,8 @@
-insert into users (id,active,email,first_name,last_name,password,user_name,role_id)
+insert into users (id,active,email,first_name,last_name,password,user_name,role_id,status)
 values
-(null,1,'krishnakc@gmail.com','Krishna','KC','$2a$10$fBCuMwUN7mwwNk945oGpmuom6oeftLg1CfVOHVFOnfDHsAlzsk0I.','admin1',1),
-(null,1,'alican@gmail.com','Alican','Ozer','$2a$10$nDJmxV2woGtsE.y9ofYH/.7N4Lo/xBt5FcnQqdktGpzRwqmH7S77S','seller1',2),
-(null,1,'zayed@gmail.com','Zayed','Haussan','$2a$10$NRWAxnj0D/Nx39/5Fa3qF.jIBOaPvZ2Yc18VLnMi1wyS/hfH2HK4e','buyer1',3);
+(null,1,'krishnakc@gmail.com','Krishna','KC','$2a$10$e408/gia2hvSw.rgtrobk.wOMRiS.PBCutttzHbCnsxuDObf2rOgK','admin1',1,false),
+(null,1,'alican@gmail.com','Alican','Ozer','$2a$10$nDJmxV2woGtsE.y9ofYH/.7N4Lo/xBt5FcnQqdktGpzRwqmH7S77S','seller1',2,false),
+(null,1,'zayed@gmail.com','Zayed','Haussan','$2a$10$NRWAxnj0D/Nx39/5Fa3qF.jIBOaPvZ2Yc18VLnMi1wyS/hfH2HK4e','buyer1',3,false);
 
 
 -- roles
