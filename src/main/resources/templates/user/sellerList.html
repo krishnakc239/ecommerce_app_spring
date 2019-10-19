@@ -1,0 +1,128 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{common/masterLayout}">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <div class="row">
+            <div th:insert="fragment/sidebar :: sidebar">
+
+            </div>
+
+
+            <!-- table with search bar-->
+            <div class="col-md-9">
+                <!--                <div class="container">-->
+                <div class="row">
+                    <div class="row">
+                        <!--                            search bar  -->
+                        <div class="col-md-6">
+                            <form class="input-group" th:action="@{/searchUser}" method="get">
+                                <input name="searchParameter" type="search" class="btn btn-default">
+                                <span class="glyphicon glyphicon-search"></span>Search
+                                </input>
+                            </form>
+                        </div>
+                        <!--                             add new product -->
+<!--                        <div class="col-md-6">-->
+<!--                            <a th:href="@{/user/create}" class="pull-right"><h3>Add User</h3></a>-->
+<!--                        </div>-->
+
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-info" th:if="${message}" th:utext="${message}"></div>
+                        <!-- <div class="page-title pull-left" th:if="${#authentication.getName() != null}" th:text="My Posts List"></div>-->
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Email</th>
+                                <th>Username</th>
+                                <th>Active</th>
+                                <th>Status</th>
+                                <th class="text-center"
+                                    sec:authorize="hasAuthority('ROLE_ADMIN')">Action
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="u,i : ${pager.pagerObjects}">
+                                <div th:if="${u.role.role =='ROLE_SELLER'}">
+                                    <!---->
+                                    <td th:text="${i.count}"></td>
+                                    <td th:text="${u.firstName+', '+u.lastName}"></td>
+                                    <td th:text="${u.role.role}"></td>
+                                    <td th:text="${u.email}"></td>
+                                    <td th:text="${u.userName}"></td>
+                                    <td th:text="${u.active}"></td>
+                                    <td><button class="btn btn-success" th:if="${u.status == true}"
+                                                th:text="'Approved'"></button>
+                                        <form th:action="@{/user/approve/{id}(id=${u.id})} ">
+                                            <button class="btn btn-danger" th:if="${u.status == false}"
+                                                    th:text="'Approve'"></button>
+                                        </form></td>
+                                    <td class="text-center" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                        <!--								<a th:href="@{'/edit/' + ${u.id}}"><span class="fa fa-edit"></span><</a>-->
+                                        <a href="#" th:href="@{/user/edit/{id}/(id=${u.id})}"><span
+                                                class="fa fa-edit"></span></a>
+
+                                        <a data-toggle="modal" data-target="#modal-warning"
+                                           th:attr="data-target='#modal-warning'+${u.id }">
+                                            <span class="glyphicon glyphicon-trash"></span></a>
+                                        <!---->
+                                        <div class="modal modal-warning fade in"
+                                             th:id="modal-warning+${u.id }">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                        <h5 class="modal-title">Delete Product</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h3>Are you sure want to delete this Product?</h3>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button"
+                                                                class="btn btn-outline pull-left btn-warning"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                        <a type="button" class="btn btn-outline"
+                                                           th:href="@{/user/delete/{id}(id=${u.id})}"><i
+                                                                class="fa fa-check"></i>&nbsp;Yes</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <!--                     <div class="row form-row "> &ndash;&gt;-->
+                        <div class="form-group col-lg-8col-lg-12">
+                            <div th:replace="/fragment/pagination :: pagination(URLparameter='/userList')"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--                </div>-->
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
