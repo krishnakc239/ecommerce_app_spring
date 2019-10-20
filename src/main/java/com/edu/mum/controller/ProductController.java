@@ -156,4 +156,15 @@ public class ProductController {
         return "product/productList";
     }
 
+    @GetMapping("/productDetails/{id}")
+    public String productDetails(@PathVariable("id") Long product_id, Model model){
+        Optional<Product> productGet = this.productService.findById(product_id);
+        Product product = productGet.get();
+        model.addAttribute("product",product);
+        System.out.println("ok" + product.toString());
+        return  "product/single-product";
+
+    }
+
+
 }
