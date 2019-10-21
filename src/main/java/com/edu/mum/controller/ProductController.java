@@ -11,6 +11,8 @@ import com.edu.mum.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,6 +52,9 @@ public class ProductController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @GetMapping("/product/create")
     public String create(@ModelAttribute Product product, Model model) {
         model.addAttribute("categories", categoryService.getAllCategory());
@@ -82,6 +87,7 @@ public class ProductController {
                 product.setCoverImage(imgFile.getOriginalFilename());
             }
             this.productService.create(product);
+            sendEmailtoFollowers(product);
             redirectAttributes.addFlashAttribute("successMessage", "Product has been added");
 
         }
@@ -175,7 +181,7 @@ public class ProductController {
         //logic  for follow and unfollow display
         Set<User> followerList = product.getUser().getFollowings();
         Set<String> userNameList = new HashSet<>();
-        for (User u:followerList) {
+        for (User u : followerList) {
             userNameList.add(u.getUserName());
         }
         model.addAttribute("userNameList", userNameList);
@@ -184,7 +190,22 @@ public class ProductController {
 
     }
 
+    void sendEmailtoFollowers(Product product) {
+        Set<User> followerList = product.getUser().getFollowings();
+        String SendTo = "";
+        for (User u : followerList) {
+            System.out.println(u.getEmail());
+            SendTo += u.getEmail() + ',';
+        }
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(SendTo);
 
+        msg.setSubject("New Product Added");
+        msg.setText("Hi,\nDear Customer, A new product is added named " + product.getName() + "\nCheck out website to see details");
+
+        javaMailSender.send(msg);
+
+    }
 
 
 }
