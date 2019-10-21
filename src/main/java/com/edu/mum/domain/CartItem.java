@@ -19,6 +19,9 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne
+    private Order order;
+
     @NotNull
     private Integer stock;
 
@@ -88,5 +91,13 @@ public class CartItem {
                 ", quantity=" + quantity +
                 ", amount=" + amount +
                 '}';
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
