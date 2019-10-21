@@ -23,6 +23,7 @@ public class CartItem {
     private Integer stock;
 
     @NotNull
+    @Column(columnDefinition = "integer default 1")
     private Integer quantity;
 
     private Double amount;
@@ -80,9 +81,9 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return "Cart{" +
+        return "CartItem{" +
                 "id=" + id +
-//                ", user=" + user +
+                ", user=" + user +
                 ", product=" + product +
                 ", stock=" + stock +
                 ", quantity=" + quantity +

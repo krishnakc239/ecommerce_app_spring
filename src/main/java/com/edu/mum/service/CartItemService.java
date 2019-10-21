@@ -7,6 +7,11 @@ import java.util.List;
 public interface CartItemService {
 
     void save(CartItem cartItem);
-    List<CartItem> findAll();
+
+    List<CartItem> findAllByUser();
     void delete(CartItem cartItem);
+
+    Double getSubTotal();
+
+    int getNumberOfProducts();
 }
