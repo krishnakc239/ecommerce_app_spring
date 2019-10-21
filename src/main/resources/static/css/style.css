@@ -1197,3 +1197,11 @@ h3.tags
     font-weight: bold;
     padding: 2px 4px;
 }
+/*review list area*/
+.user_name{
+    font-size:14px;
+    font-weight: bold;
+}
+.comments-list .media{
+    border-bottom: 1px dotted #ccc;
+}

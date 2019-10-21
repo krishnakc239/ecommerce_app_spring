@@ -3,6 +3,7 @@ package com.edu.mum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -32,6 +33,9 @@ public class Product {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "product")
+    private List<Review> review;
 
     public Long getId() {
         return id;

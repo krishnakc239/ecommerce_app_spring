@@ -1,9 +1,11 @@
 package com.edu.mum.controller;
 
 import com.edu.mum.domain.Product;
+import com.edu.mum.domain.Review;
 import com.edu.mum.domain.User;
 import com.edu.mum.service.CategoryService;
 import com.edu.mum.service.ProductService;
+import com.edu.mum.service.ReviewService;
 import com.edu.mum.service.UserService;
 import com.edu.mum.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("/product/create")
     public String create(@ModelAttribute Product product, Model model) {
@@ -160,11 +165,15 @@ public class ProductController {
     public String productDetails(@PathVariable("id") Long product_id, Model model){
         Optional<Product> productGet = this.productService.findById(product_id);
         Product product = productGet.get();
+        Optional<List<Review>> reviews= reviewService.findAllByProduct(product);
+        model.addAttribute("reviews",reviews.get());
         model.addAttribute("product",product);
-        System.out.println("ok" + product.toString());
+
         return  "product/single-product";
 
     }
+
+
 
 
 }
