@@ -28,8 +28,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class ProductController {
@@ -166,8 +168,17 @@ public class ProductController {
         Optional<Product> productGet = this.productService.findById(product_id);
         Product product = productGet.get();
         Optional<List<Review>> reviews= reviewService.findAllByProduct(product);
-        model.addAttribute("reviews",reviews.get());
+        List<Review> reviewList = reviews.isPresent()? reviews.get():null;
+        model.addAttribute("reviews",reviewList);
         model.addAttribute("product",product);
+
+        //logic  for follow and unfollow display
+        Set<User> followerList = product.getUser().getFollowings();
+        Set<String> userNameList = new HashSet<>();
+        for (User u:followerList) {
+            userNameList.add(u.getUserName());
+        }
+        model.addAttribute("userNameList", userNameList);
 
         return  "product/single-product";
 
