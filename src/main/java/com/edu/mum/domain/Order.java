@@ -29,7 +29,11 @@ public class Order {
     @JoinColumn(name = "cart_id")
     private List<CartItem> cartItemList;
 
+    @OneToOne
+    @JoinColumn(name = "billing_addr_id")
     private Address billingAddress;
+    @OneToOne
+    @JoinColumn(name = "shpiing_addr_id")
     private Address shippingAddress;
 
     private String status;
