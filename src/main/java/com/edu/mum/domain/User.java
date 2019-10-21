@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -49,7 +50,7 @@ public class User {
     @JoinTable(name = "relation",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "following_id"))
-    private List<User> followings;
+    private Set<User> followings;
 
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -173,11 +174,11 @@ public class User {
         this.status = status;
     }
 
-    public List<User> getFollowings() {
+    public Set<User> getFollowings() {
         return followings;
     }
 
-    public void setFollowings(List<User> followings) {
+    public void setFollowings(Set<User> followings) {
         this.followings = followings;
     }
 }
