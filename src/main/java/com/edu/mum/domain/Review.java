@@ -3,6 +3,7 @@ package com.edu.mum.domain;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -28,19 +29,18 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @NotNull
     private User user;
 
+    @Column(name = "review_message")
+    @NotBlank
     private String reviewMessage;
 
-    public Review(){
+    public Review() {
 
     }
 
-    public Review(Date reviewDate, Product product, User user) {
-        this.reviewDate = reviewDate;
+    public Review(Product product) {
         this.product = product;
-        this.user = user;
     }
 
     public Long getId() {

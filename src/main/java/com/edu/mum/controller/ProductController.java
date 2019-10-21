@@ -93,7 +93,7 @@ public class ProductController {
         model.addAttribute("pager", pager);
 
         //store current logged in user in "user" object
-        UserDetails userDetails = (UserDetails)((Authentication)principal).getPrincipal();
+        UserDetails userDetails = (UserDetails) ((Authentication) principal).getPrincipal();
         Optional<User> user = userService.findByUsername(userDetails.getUsername());
         model.addAttribute("user", user.get());
         return "product/productList";
@@ -162,18 +162,19 @@ public class ProductController {
     }
 
     @GetMapping("/productDetails/{id}")
-    public String productDetails(@PathVariable("id") Long product_id, Model model){
+    public String productDetails(@PathVariable("id") Long product_id, Model model) {
         Optional<Product> productGet = this.productService.findById(product_id);
         Product product = productGet.get();
-        Optional<List<Review>> reviews= reviewService.findAllByProduct(product);
-        model.addAttribute("reviews",reviews.get());
-        model.addAttribute("product",product);
-
-        return  "product/single-product";
+        Optional<List<Review>> reviews = reviewService.findAllByProduct(product);
+        if (reviews.isPresent())
+            model.addAttribute("reviews", reviews.get());
+        else model.addAttribute("reviews", null);
+        model.addAttribute("product", product);
+        Review r = new Review(new Product(product_id));
+        model.addAttribute("review", r);
+        return "product/single-product";
 
     }
-
-
 
 
 }
