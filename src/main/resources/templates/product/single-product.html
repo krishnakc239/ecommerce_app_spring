@@ -128,7 +128,7 @@
                                                         </div>
                                                         <input type="hidden" th:field="*{product.id}">
                                                         <p><label for="review">Your review</label>
-                                                            <textarea th:field="*{reviewMessage}" id="" cols="30"
+                                                            <textarea id="review" th:field="*{reviewMessage}" cols="30"
                                                                       rows="10"></textarea>
                                                         <div th:if="${#fields.hasErrors('reviewMessage')}"
                                                              th:errors="*{reviewMessage}" class="invalid-feedback">
