@@ -9,6 +9,7 @@ import com.edu.mum.service.UserService;
 import com.edu.mum.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +37,7 @@ public class ReviewController {
 
     @Autowired
     private UserService userService;
+
 
     @PostMapping(value = "/review/create")
     public String saveReview(@Valid @ModelAttribute("review") Review review, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) throws IOException {
@@ -82,7 +84,7 @@ public class ReviewController {
     }
 
     @GetMapping("/searchReview")
-    public String searchPost(@RequestParam(defaultValue = "0") int page,
+    public String searchReview(@RequestParam(defaultValue = "0") int page,
                              @RequestParam("searchParameter") String searchParameter, Model model) {
         Page<Review> reviews = reviewService.findAllByReviewMessageContainingIgnoreCaseOrProduct_NameContainingIgnoreCase(searchParameter, searchParameter, page);
         Pager pager = new Pager(reviews);
@@ -91,10 +93,12 @@ public class ReviewController {
     }
 
     @GetMapping("review/approve/{id}")
-    public String approveSellerForAddProduct(@PathVariable Long id) {
+    public String approveReview(@PathVariable Long id) {
         Review review = reviewService.findById(id);
         review.setApprove(true);
         reviewService.save(review);
         return "redirect:/reviewList";
     }
+
+
 }
