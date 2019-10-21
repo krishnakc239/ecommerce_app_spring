@@ -10,11 +10,12 @@
 <div class="col-md-3" th:fragment="sidebar">
     <div id="MainMenu">
         <div class="list-group panel">
-            <a href="#" th:href="@{/productList}" class="list-group-item list-group-item-success" >Product List</a>
+            <a href="#" th:href="@{/productList}" class="list-group-item list-group-item-success" sec:authorize="hasAuthority('ROLE_ADMIN')">Product List</a>
             <a href="#" th:href="@{/sellerList}" class="list-group-item list-group-item-success" sec:authorize="hasAuthority('ROLE_ADMIN')">Seller List</a>
             <a href="#" th:href="@{/buyerList}" class="list-group-item list-group-item-success" sec:authorize="hasAuthority('ROLE_ADMIN')">Buyer List</a>
             <a href="#"  th:href="@{/reviewList}" class="list-group-item list-group-item-success" sec:authorize="hasAuthority('ROLE_ADMIN')" >Reviews</a>
-            <a href="#" class="list-group-item list-group-item-success">Orders</a>
+            <a href="#" th:href="@{/OrderList}" class="list-group-item list-group-item-success" sec:authorize="hasAuthority('ROLE_BUYER')" >Orders</a>
+            <a href="#" th:href="@{/user/details}" class="list-group-item list-group-item-success" sec:authorize="hasAuthority('ROLE_BUYER')" >Account</a>
             <a href="#" class="list-group-item list-group-item-success">Payments</a>
         </div>
     </div>

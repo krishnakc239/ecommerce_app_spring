@@ -1,0 +1,37 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{common/masterLayout}">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <div class="row">
+            <div th:insert="fragment/sidebar :: sidebar">
+
+            </div>
+
+
+            <!-- table with search bar-->
+            <div class="col-md-9">
+                <!--                <div class="container">-->
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 th:text="'Name: '+${user.firstName}+' '+${user.lastName} +' Username:'+${user.userName}" class="title"></h3>
+                        <h3 th:text="'Email: '+${user.email}" class="title"></h3>
+
+                    </div>
+
+                </div>
+                <!--                </div>-->
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

@@ -5,8 +5,10 @@ import com.edu.mum.domain.User;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.service.UserService;
 import com.edu.mum.util.Pager;
+import groovy.lang.GrabExclude;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/user/delete/{id}")
-    public String delete(@PathVariable("id")Long id) {
+    public String delete(@PathVariable("id") Long id) {
         User user = userService.findById(id);
         userService.deleteById(id);
         if (user.getRole().getRole().equals("ROLE_SELLER"))
@@ -56,9 +58,9 @@ public class UserController {
     }
 
     @GetMapping("/user/edit/{id}")
-    public String edit(@PathVariable("id")Long id, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
-        if(user == null) {
+        if (user == null) {
             return "redirect:/users";
         }
         model.addAttribute("user", user);
@@ -67,7 +69,7 @@ public class UserController {
 
     @PostMapping("/user/edit")
     public String edit(@ModelAttribute User user, Model model) {
-        System.out.println("user goig to be update "+ user);
+        System.out.println("user goig to be update " + user);
         User updatedUser = userService.findById(user.getId());
         updatedUser.setFirstName(user.getFirstName());
         updatedUser.setLastName(user.getLastName());
@@ -79,7 +81,7 @@ public class UserController {
     }
 
     @GetMapping("user/approve/{id}")
-    public String approveSellerForAddProduct(@PathVariable Long id){
+    public String approveSellerForAddProduct(@PathVariable Long id) {
         User seller = userService.findById(id);
         seller.setStatus(true);
         userService.save(seller);
@@ -88,25 +90,30 @@ public class UserController {
 
     @GetMapping("/follow/{pid}/{fid}")
     public String updateFollower(
-                                 @PathVariable Long pid,
-                                 @PathVariable String fid
-                                 ){
+            @PathVariable Long pid,
+            @PathVariable String fid
+    ) {
         Optional<Product> product = productService.findById(pid);
         User seller = userService.findById(product.get().getUser().getId());
         Optional<User> follower = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Set<User> followers = seller.getFollowings();
-        if (fid.equals("1")){
+        if (fid.equals("1")) {
             followers.add(follower.get());
-        }else {
+        } else {
             followers.remove(follower.get());
         }
         seller.setFollowings(followers);
         userService.save(seller);
 
         return "redirect:/productDetails/{pid}";
-
     }
 
-
+    @GetMapping("/user/details")
+    public String userDetails(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = this.userService.findByUsername(auth.getName());
+        model.addAttribute("user",user.get());
+        return "user/details";
+    }
 
 }
