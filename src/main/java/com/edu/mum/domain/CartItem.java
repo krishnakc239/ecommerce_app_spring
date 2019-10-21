@@ -4,8 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "carts")
-public class Cart {
+@Table(name = "cart_items")
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,8 @@ public class Cart {
 
     private Double amount;
 
-    public Cart(){}
+
+    public CartItem(){}
 
     public Long getId() {
         return id;
@@ -81,7 +82,7 @@ public class Cart {
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", user=" + user +
+//                ", user=" + user +
                 ", product=" + product +
                 ", stock=" + stock +
                 ", quantity=" + quantity +
