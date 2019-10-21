@@ -1,14 +1,22 @@
 package com.edu.mum.controller;
 
+import com.edu.mum.domain.Product;
 import com.edu.mum.domain.User;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.service.UserService;
 import com.edu.mum.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -76,6 +84,27 @@ public class UserController {
         seller.setStatus(true);
         userService.save(seller);
         return "redirect:/sellerList";
+    }
+
+    @GetMapping("/follow/{pid}/{fid}")
+    public String updateFollower(
+                                 @PathVariable Long pid,
+                                 @PathVariable String fid
+                                 ){
+        Optional<Product> product = productService.findById(pid);
+        User seller = userService.findById(product.get().getUser().getId());
+        Optional<User> follower = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Set<User> followers = seller.getFollowings();
+        if (fid.equals("1")){
+            followers.add(follower.get());
+        }else {
+            followers.remove(follower.get());
+        }
+        seller.setFollowings(followers);
+        userService.save(seller);
+
+        return "redirect:/productDetails/{pid}";
+
     }
 
 
