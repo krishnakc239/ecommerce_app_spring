@@ -37,6 +37,13 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Review> review;
 
+    public Product(){
+    }
+
+    public Product(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
