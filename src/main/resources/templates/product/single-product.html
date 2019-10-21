@@ -126,7 +126,7 @@
                                                             <div th:class="${errorMessage} ? 'alert alert-error' : ''"
                                                                  th:text="${errorMessage}"></div>
                                                         </div>
-                                                        <input type="hidden" th:field="${review.product.id}">
+                                                        <input type="hidden" th:field="*{product.id}">
                                                         <p><label for="review">Your review</label>
                                                             <textarea th:field="*{reviewMessage}" id="" cols="30"
                                                                       rows="10"></textarea>
@@ -148,13 +148,13 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <div class="page-header">
+                                    <div th:if="${not #lists.isEmpty(reviews)}">
                                         <h1><small th:text="${#lists.size(reviews) + ' Reviews'}" class="pull-right">45
                                             comments</small> Reviews </h1>
                                     </div>
                                     <div class="comments-list" th:unless="${#lists.isEmpty(reviews)}">
                                         <div th:each="r : ${reviews}">
-                                            <div class="media" th:if="${r.approve == true}">
+                                            <div class="media" th:if="${r.approve ==true}">
                                                 <p class="pull-right"><small th:text="${r.reviewDate}">5 days
                                                     ago</small>
                                                 </p>
@@ -173,7 +173,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

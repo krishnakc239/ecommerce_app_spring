@@ -95,7 +95,7 @@ public class ProductController {
         model.addAttribute("pager", pager);
 
         //store current logged in user in "user" object
-        UserDetails userDetails = (UserDetails)((Authentication)principal).getPrincipal();
+        UserDetails userDetails = (UserDetails) ((Authentication) principal).getPrincipal();
         Optional<User> user = userService.findByUsername(userDetails.getUsername());
         model.addAttribute("user", user.get());
         return "product/productList";
