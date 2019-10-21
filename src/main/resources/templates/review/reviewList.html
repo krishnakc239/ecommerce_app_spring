@@ -1,0 +1,87 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{common/masterLayout}">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <div class="row">
+            <div th:insert="fragment/sidebar :: sidebar">
+
+            </div>
+
+
+            <!-- table with search bar-->
+            <div class="col-md-9">
+                <!--                <div class="container">-->
+                <div class="row">
+                    <div class="row">
+                        <!--                            search bar  -->
+                        <div class="col-md-6">
+                            <form class="input-group" th:action="@{/searchReview}" method="get">
+                                <input name="searchParameter" type="search" class="btn btn-default" placeholder="search.." />
+                            </form>
+                        </div>
+                        <!--                             add new product -->
+                        <!--                        <div class="col-md-6">-->
+                        <!--                            <a th:href="@{/user/create}" class="pull-right"><h3>Add User</h3></a>-->
+                        <!--                        </div>-->
+
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-info" th:if="${message}" th:utext="${message}"></div>
+                        <!-- <div class="page-title pull-left" th:if="${#authentication.getName() != null}" th:text="My Posts List"></div>-->
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th>User</th>
+                                <th>Product</th>
+                                <th>Message</th>
+                                <th>Review</th>
+                                <th>Active</th>
+                                <th class="text-center"
+                                    sec:authorize="hasAuthority('ROLE_ADMIN')">Action
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="r,i : ${pager.pagerObjects}">
+
+                                    <td th:text="${i.count}"></td>
+                                    <td th:text="${r.user.firstName+', '+r.user.lastName}"></td>
+                                    <td th:text="${r.product.name}"></td>
+                                    <td th:text="${r.reviewMessage}"></td>
+                                    <td th:text="${r.reviewDate}"></td>
+                                    <td th:text="${r.approve}"></td>
+                                    <td sec:authorize="hasAuthority('ROLE_ADMIN')"><button class="btn btn-success" th:if="${r.approve == true}"
+                                                th:text="'Approved'"></button>
+                                        <form th:action="@{/review/approve/{id}(id=${r.id})} ">
+                                            <button class="btn btn-danger" th:if="${r.approve == false}"
+                                                    th:text="'Approve'"></button>
+                                        </form></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <!--                     <div class="row form-row "> &ndash;&gt;-->
+                        <div class="form-group col-lg-8col-lg-12">
+                            <div th:replace="/fragment/pagination :: pagination(URLparameter='/reviewList')"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--                </div>-->
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
