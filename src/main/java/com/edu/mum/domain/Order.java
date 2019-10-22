@@ -25,20 +25,23 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "order")
+    @OneToMany
+    @JoinColumn(name = "order_id")
     private List<CartItem> cartItemList;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "billing_addr_id")
     private Address billingAddress;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_addr_id")
     private Address shippingAddress;
 
     private String status;
+    @Column
+    private boolean paid = false;
     private String contact;
 
-    private double totalAount;
+    private double totalAmount;
 
     public Long getId() {
         return id;
@@ -104,23 +107,27 @@ public class Order {
         this.status = status;
     }
 
-    public double getTotalAount() {
-        double sum =0.00;
-        for (CartItem c:this.cartItemList) {
-            sum = c.getAmount();
-        }
-        return sum;
-    }
-
-    public void setTotalAount(double totalAount) {
-        this.totalAount = totalAount;
-    }
-
     public String getContact() {
         return contact;
     }
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }
