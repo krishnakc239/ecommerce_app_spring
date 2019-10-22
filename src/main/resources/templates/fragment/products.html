@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 </head>
@@ -17,9 +18,12 @@
 <!--                                <img src="img/product-1.jpg" alt="">-->
                                 <img class="img-responsive" th:src="@{${'/uploads/images/'+product.coverImage}}" alt="">
                                 <div class="product-hover">
-                                    <a class="add-to-cart-link" href="#"
-                                       th:href="@{/addToCart/{pid}(pid =${product.id})}"><i
-                                            class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    <div sec:authorize="hasRole('ROLE_BUYER')">
+                                        <a class="add-to-cart-link" href="#"
+                                           th:href="@{/addToCart/{pid}(pid =${product.id})}"><i
+                                                class="fa fa-shopping-cart"></i> Add to cart</a>
+                                    </div>
+
                                     <a href="../single-product.html" th:href= "@{'/productDetails/' + ${product.id}}"  class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                 </div>
                             </div>
