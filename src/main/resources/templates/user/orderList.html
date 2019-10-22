@@ -13,8 +13,6 @@
             <div th:insert="fragment/sidebar :: sidebar">
 
             </div>
-
-
             <!-- table with search bar-->
             <div class="col-md-9">
                 <!--                <div class="container">-->
@@ -31,7 +29,7 @@
                 <div class="row">
                     <div class="alert alert-info" th:if="${message}" th:utext="${message}"></div>
                     <!-- <div class="page-title pull-left" th:if="${#authentication.getName() != null}" th:text="My Posts List"></div>-->
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="table">
                         <thead>
                         <tr>
                             <th>S.N.</th>
@@ -76,7 +74,7 @@
                 </div>
 
                 <!--                </div>-->
-
+                <button class="btn mybtn pull-right" onclick="fnExcelReport();">Download as Excel</button>
             </div>
         </div>
     </div>
@@ -84,3 +82,56 @@
 </th:block>
 </body>
 </html>
+<script>
+    function fnExcelReport() {
+        var i, j;
+        var csv = "";
+
+        var table = document.getElementById("table");
+
+        var table_headings = table.children[0].children[0].children;
+        var table_body_rows = table.children[1].children;
+
+        var heading;
+        var headingsArray = [];
+        for(i = 0; i < table_headings.length; i++) {
+            heading = table_headings[i];
+            headingsArray.push('"' + heading.innerHTML + '"');
+        }
+
+        csv += headingsArray.join(',') + ";\n";
+
+        var row;
+        var columns;
+        var column;
+        var columnsArray;
+        for(i = 0; i < table_body_rows.length; i++) {
+            row = table_body_rows[i];
+            columns = row.children;
+            columnsArray = [];
+            for(j = 0; j < columns.length; j++) {
+                var column = columns[j];
+                columnsArray.push('"' + column.innerHTML + '"');
+            }
+            csv += columnsArray.join(',') + ";\n";
+        }
+
+        download("export.csv",csv);
+    }
+
+    //From: http://stackoverflow.com/a/18197511/2265487
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        }
+        else {
+            pom.click();
+        }
+    }
+</script>
