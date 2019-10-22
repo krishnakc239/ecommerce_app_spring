@@ -1,0 +1,43 @@
+<html lang="en" layout:decorate="~{common/masterLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="container">
+        <p><h3 th:text="${message}"></h3></p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Order Id</th>
+                <th scope="col">Billing Address</th>
+                <th scope="col">Shipping Address</th>
+                <th scope="col">Ordered By</th>
+                <th scope="col">Total Amount</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Paid Status</th>
+                <th scope="col">Order Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td th:text="${order.id}">Mark</td>
+                <td th:text="${order.billingAddress.country+','+ order.billingAddress.state+','+order.billingAddress.city+','+order.billingAddress.zipCode}">Otto</td>
+                <td th:text="${order.shippingAddress.country+','+ order.shippingAddress.state+','+order.shippingAddress.city+','+order.shippingAddress.zipCode}">Otto</td>
+                <td th:text="${order.user.firstName+','+ order.user.lastName}">Otto</td>
+                <td th:text="${order.totalAmount}">Otto</td>
+                <td th:text="${order.contact}">Otto</td>
+                <td th:text="${order.paid}">Otto</td>
+                <td th:text="${order.orderDate}">Otto</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</th:block>
+</body>
+</html>

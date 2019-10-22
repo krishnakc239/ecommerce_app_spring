@@ -1,0 +1,169 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{common/masterLayout}">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <!-- You can make it whatever width you want. I'm making it full width
+            on <= small devices and 4/12 page width on >= medium devices -->
+            <div class="col-md-2"></div>
+            <div class="col-xs-12 col-md-4">
+
+
+                <!-- CREDIT CARD FORM STARTS HERE -->
+                <div class="panel panel-default credit-card-box">
+                    <div class="panel-heading display-table" >
+                        <div class="row display-tr" >
+                            <h3 class="panel-title display-td" >Payment Details</h3>
+                            <div class="display-td" >
+                                <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form th:action="@{/pay/{oid}(oid=${order.id})}" th:object="${credit}" method="post" role="form" id="payment-form">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <p th:if="${message}" th:text="${message}"></p>
+                                        <ul th:if="${#fields.hasErrors('*')}">
+                                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+                                        </ul>
+                                        <label for="cardNumber">CARD NUMBER</label>
+                                        <div class="input-group">
+                                            <input type="hidden" th:field="${credit.id}"/>
+                                            <input
+                                                    type="text"
+                                                    id="cardNumber"
+                                                    class="form-control"
+                                                    name="cardNumber"
+                                                    th:field = "${credit.cardNumber}"
+                                                    placeholder="Valid Card Number"
+                                                    autocomplete="cc-number"
+                                                    required autofocus
+                                            />
+                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-7 col-md-7">
+                                    <div class="form-group">
+<!--                                        <div th:if="${#fields.hasErrors('cardExpiry')}" th:errors="*{cardExpiry}" class="invalid-feedback"></div>-->
+
+                                        <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                                        <input
+                                                type="text"
+                                                id="cardExpiry"
+                                                class="form-control"
+                                                name="cardExpiry"
+                                                th:field = "${credit.expDate}"
+                                                placeholder="MM / YY"
+                                                autocomplete="cc-exp"
+                                                required
+                                        />
+                                    </div>
+                                </div>
+                                <div class="col-xs-5 col-md-5 pull-right">
+                                    <div class="form-group">
+<!--                                        <div th:if="${#fields.hasErrors('cardCVC')}" th:errors="*{cardCVC}" class="invalid-feedback"></div>-->
+                                        <label for="cardCVC">CV CODE</label>
+                                        <input
+                                                type="text"
+                                                id="cardCVC"
+                                                class="form-control"
+                                                name="cardCVC"
+                                                th:field = "${credit.cvCode}"
+                                                placeholder="CVC"
+                                                autocomplete="cc-csc"
+                                                required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label for="couponCode">Amount</label>
+                                        <input type="text" id="couponCode" th:field = "${credit.amount}" class="form-control" name="couponCode" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit">Pay</button>
+                                </div>
+                            </div>
+                            <div class="row" style="display:none;">
+                                <div class="col-xs-12">
+                                    <p class="payment-errors"></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- CREDIT CARD FORM ENDS HERE -->
+
+
+            </div>
+            <div class="col-md-4">
+                <h3 id="order_review_heading">Your order</h3>
+
+                <div id="order_review">
+                    <table class="shop_table">
+                        <thead>
+<!--                        <tr>-->
+<!--                            <th class="product-name">Product</th>-->
+<!--                            <th class="product-total">Total</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr class="cart_item">-->
+<!--                            <td class="product-name">-->
+<!--                                Ship Your Idea <strong class="product-quantity">× 1</strong> </td>-->
+<!--                            <td class="product-total">-->
+<!--                                <span class="amount" >£15.00</span> </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+                        <tfoot>
+
+                        <tr class="cart-subtotal">
+                            <th>Cart Subtotal</th>
+                            <td><span class="amount" th:text="${subtotal}">£15.00</span>
+                            </td>
+                        </tr>
+
+                        <tr class="shipping">
+                            <th>Shipping and Handling</th>
+                            <td th:if="${shipping}==0">Free Shipping</td>
+                            <td th:text="${shipping}" th:unless="${shipping}==0">Free Shipping</td>
+                            </td>
+                        </tr>
+
+
+                        <tr class="order-total">
+                            <th>Order Total</th>
+                            <td><strong><span class="amount" th:text="${total}">£15.00</span></strong> </td>
+                        </tr>
+
+                        </tfoot>
+                    </table>
+
+                </div>
+
+
+
+        </div>
+            <div class="col-md-2"></div>
+
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
