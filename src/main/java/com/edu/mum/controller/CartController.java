@@ -1,17 +1,20 @@
 package com.edu.mum.controller;
 
-import com.edu.mum.domain.CartItem;
-import com.edu.mum.domain.Order;
-import com.edu.mum.domain.Product;
-import com.edu.mum.domain.ShipCountry;
+import com.edu.mum.domain.*;
 import com.edu.mum.service.CartItemService;
+import com.edu.mum.service.CreditCardService;
+import com.edu.mum.service.OrderService;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.util.SessionUtils;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +30,11 @@ public class CartController {
     private CartItemService cartItemService;
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private CreditCardService creditCardService;
     Double shippingCost = 0.0;
 
     @GetMapping("/addToCart/{pid}")
@@ -36,12 +44,12 @@ public class CartController {
             Model model) {
         Optional<Product> product = productService.findById(Long.valueOf(pid));
         Product addedProduct = product.isPresent() ? product.get() : new Product();
-        model.addAttribute("product", addedProduct);
         CartItem cartItem = new CartItem();
         cartItem.setProduct(addedProduct);
         cartItem.setQuantity(Integer.parseInt(orderQuantity));
         cartItem.setStock(addedProduct.getQuantity());
         cartItem.setUser(sessionUtils.getCurrentUser());
+        cartItem.setAmount(addedProduct.getPrice()*addedProduct.getQuantity());
 
         cartItemService.save(cartItem);
         //model.addAttribute("cartList", cartItemService.findAllByUser());
@@ -105,6 +113,48 @@ public class CartController {
         return "redirect:/shoppingCart";
     }
 
+    @PostMapping("/placeOrder")
+    public String getPaymentPage(@ModelAttribute Order order){
+        order.setUser(sessionUtils.getCurrentUser());
+//        order.setCartItemList(cartItemService.findAllByUser());
+        order.setTotalAmount(cartItemService.getSubTotal() + shippingCost);
+        orderService.save(order);
+        return "redirect:/payment";
+    }
+
+    @GetMapping("/payment")
+    public String  showPaymentForm(@ModelAttribute CreditCardInfo credit, Model model){
+        model.addAttribute("subtotal", cartItemService.getSubTotal());
+        model.addAttribute("shipping", shippingCost);
+//        model.addAttribute("order", model.asMap().get("order"));
+        model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
+        model.addAttribute("credit",new CreditCardInfo());
+        return "product/payment";
+    }
+    @PostMapping("/pay/{oid}")
+    public String pay(@Valid @ModelAttribute CreditCardInfo credit,
+                      BindingResult bindingResult,@PathVariable Long oid, Model model){
+        Order order = orderService.findById(oid);
+        System.out.println(credit);
+        if (bindingResult.hasErrors()){
+            model.addAttribute("order",order);
+            System.out.println(bindingResult.getAllErrors());
+            return "product/payment";
+        }else {
+            Optional<CreditCardInfo> creditCard = creditCardService.findByCardNumber(credit.getCardNumber());
+            if (creditCard.isPresent()){
+                creditCardService.updateAmount(credit);
+                order.setPaid(true);
+                model.addAttribute("order",order);
+                model.addAttribute("message","Congratulation !! Your order is placed and ready to be shipped");
+                return "product/orderSummary";
+            }else {
+                model.addAttribute("message","This credit card is not valid");
+                model.addAttribute("order",order);
+                return "product/payment";
+            }
+        }
+    }
 
 
 

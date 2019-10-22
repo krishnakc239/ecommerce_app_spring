@@ -20,6 +20,7 @@ public class CartItem {
     private Product product;
 
     @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @NotNull

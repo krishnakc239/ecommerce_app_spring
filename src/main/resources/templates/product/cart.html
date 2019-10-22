@@ -123,12 +123,12 @@
                                                        th:value="${c.quantity}" title="Qty" type="number">
                                                 <input class="plus" type="button" value="+">
                                             </div>
-                                            <button onclick="updateQuantity(${c.product.id}, )">Update</button>
+                                            <button onclick="updateQuantity(${c.product.id})">Update</button>
                                         </td>
 
                                         <td class="product-subtotal">
                                             <span class="amount" id="totalProductAmt"
-                                                  th:text="${c.product.price}*${c.quantity}">£15.00</span>
+                                                  th:value="${c.amount}">£15.00</span>
                                         </td>
 
                                     </tr>
