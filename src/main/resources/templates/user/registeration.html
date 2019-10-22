@@ -51,11 +51,12 @@
                                class="form-control input-lg"/>
                     </div>
                     <div class="form-group">
-                        <label th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="alert alert-danger"></label>
+                        <label th:if="${#fields.hasErrors('role')}" th:errors="*{role}"
+                               class="alert alert-danger"></label>
 
                         <select class="form-control" th:value="${user.role}" name="role" id="role" required="required">
-                            <option disabled="disabled" selected="selected" > -- Select user type --</option>
-                            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}" ></option>
+                            <option disabled="disabled" selected="selected"> -- Select user type --</option>
+                            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"></option>
 
                         </select>
                     </div>

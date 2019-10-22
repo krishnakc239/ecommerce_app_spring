@@ -1,11 +1,12 @@
 package com.edu.mum.controller;
 
+import com.edu.mum.domain.Order;
 import com.edu.mum.domain.Product;
 import com.edu.mum.domain.User;
+import com.edu.mum.service.OrderService;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.service.UserService;
 import com.edu.mum.util.Pager;
-import groovy.lang.GrabExclude;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -13,22 +14,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Controller
 public class UserController {
 
-
     @Autowired
     private ProductService productService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
 
 
     @GetMapping("/sellerList")
@@ -109,11 +109,22 @@ public class UserController {
     }
 
     @GetMapping("/user/details")
-    public String userDetails(Model model){
+    public String userDetails(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = this.userService.findByUsername(auth.getName());
-        model.addAttribute("user",user.get());
+        model.addAttribute("user", user.get());
         return "user/details";
     }
+
+    @GetMapping("/orderList")
+    public String OrderList(@RequestParam(defaultValue = "0") int page, Model model) {
+        Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Page<Order> orderList = this.orderService.findAllByUser(user.get(), page);
+        System.out.println("he he" + orderList);
+        Pager pager = new Pager(orderList);
+        model.addAttribute("pager", pager);
+        return "user/orderList";
+    }
+
 
 }
