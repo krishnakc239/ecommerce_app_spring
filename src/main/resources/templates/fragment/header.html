@@ -61,7 +61,10 @@
 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="#" th:href="@{/product/cart}">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cartItem"></i> <span class="product-count">5</span></a>
+                        <a href="#" th:href="@{/shoppingCart}">Cart - <span class="cart-amunt"
+                                                                            th:text="${subtotal}">$0</span> <i
+                                class="fa fa-shopping-cartItem"></i><span class="product-count"
+                                                                          th:text="${numberOfProducts}">0</span></a>
                     </div>
                 </div>
             </div>
@@ -87,7 +90,7 @@
                         <li><a href="#" sec:authorize ="hasAnyRole('ROLE_SELLER','ROLE_ADMIN')" th:href="@{/dashboard}">Dashboard</a></li>
                         <li><a href="shop.html">Shop page</a></li>
                         <li><a href="single-product.html">Single product</a></li>
-                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="#" th:href="@{/shoppingCart}">Cart</a></li>
                         <li><a href="checkout.html">Checkout</a></li>
                         <li><a href="#">Category</a></li>
                         <li><a href="#">Others</a></li>
