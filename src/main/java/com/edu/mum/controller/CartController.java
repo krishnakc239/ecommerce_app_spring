@@ -114,11 +114,12 @@ public class CartController {
     }
 
     @PostMapping("/placeOrder")
-    public String getPaymentPage(@ModelAttribute Order order){
+    public String getPaymentPage(@ModelAttribute Order order,RedirectAttributes redirectAttributes){
         order.setUser(sessionUtils.getCurrentUser());
 //        order.setCartItemList(cartItemService.findAllByUser());
         order.setTotalAmount(cartItemService.getSubTotal() + shippingCost);
         orderService.save(order);
+        redirectAttributes.addFlashAttribute("order",order);
         return "redirect:/payment";
     }
 
