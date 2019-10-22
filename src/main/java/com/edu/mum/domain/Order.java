@@ -32,10 +32,11 @@ public class Order {
     @JoinColumn(name = "billing_addr_id")
     private Address billingAddress;
     @OneToOne
-    @JoinColumn(name = "shpiing_addr_id")
+    @JoinColumn(name = "shipping_addr_id")
     private Address shippingAddress;
 
     private String status;
+    private String contact;
 
     private double totalAount;
 
@@ -113,5 +114,13 @@ public class Order {
 
     public void setTotalAount(double totalAount) {
         this.totalAount = totalAount;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 }

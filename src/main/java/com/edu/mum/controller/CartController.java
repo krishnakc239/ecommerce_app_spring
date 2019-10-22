@@ -1,6 +1,7 @@
 package com.edu.mum.controller;
 
 import com.edu.mum.domain.CartItem;
+import com.edu.mum.domain.Order;
 import com.edu.mum.domain.Product;
 import com.edu.mum.service.CartItemService;
 import com.edu.mum.service.ProductService;
@@ -45,7 +46,10 @@ public class CartController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(){
+    public String checkout(Model model){
+        Order order = new Order();
+        order.setUser(sessionUtils.getCurrentUser());
+        model.addAttribute("order",order);
         return "product/checkout";
     }
 

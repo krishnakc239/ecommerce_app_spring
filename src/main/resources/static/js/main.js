@@ -83,7 +83,21 @@ jQuery(document).ready(function($){
     $('body').scrollspy({ 
         target: '.navbar-collapse',
         offset: 95
-    })      
+    })
+
+    $("#same_as_billing").on("change", function(){
+        console.log("chek box clickedd")
+        if (this.checked) {
+            $("[name='shipping_first_name']").val($("[name='billing_first_name']").val());
+            $("[name='shipping_last_name']").val($("[name='biling_last_name']").val());
+            $("[name='shipping_city']").val($("[name='billing_city']").val());
+            $("[name='shipping_state']").val($("[name='billing_state']").val());
+            $("[name='shipping_postcode']").val($("[name='billing_postcode']").val());
+            $("[name='shipping_email']").val($("[name='billing_email']").val());
+            $("[name='shipping_phone']").val($("[name='billing_phone']").val());
+            // $("[name='shipping_country']").val($("[name='billing_']").val());
+        }
+    });
 });
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
