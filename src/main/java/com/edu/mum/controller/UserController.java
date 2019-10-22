@@ -9,6 +9,8 @@ import com.edu.mum.service.UserService;
 import com.edu.mum.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,8 @@ public class UserController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @GetMapping("/sellerList")
     public String getSellers(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -138,7 +142,22 @@ public class UserController {
         Order order = orderService.findOrderById(id);
         order.setStatus(status);
         orderService.save(order);
+        if(status.equals("Canceled")){
+            System.out.println("mail sent");
+            mailToBuyer(order);
+        }
         return "redirect:/seller/OrderList";
+    }
+
+    public void mailToBuyer(Order order){
+
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(order.getUser().getEmail());
+
+        msg.setSubject("Order Canceled");
+        msg.setText("Hi,\nDear Customer,\nSorry to tell you that your order no " + order.getOrderNum()+ " is canceled.\nCheck out website to see details");
+
+        javaMailSender.send(msg);
     }
 
     @GetMapping("buyer/order/statusChange/{id}/{status}")
