@@ -36,7 +36,7 @@ public class Product {
     private User user;
 
     @OneToMany(mappedBy = "product")
-    private List<Review> review;
+    private List<Review> reviews;
 
     public Product(){
     }
@@ -119,5 +119,13 @@ public class Product {
 
     public void updateStock() {
         this.stock++;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }
