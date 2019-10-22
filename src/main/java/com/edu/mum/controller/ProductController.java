@@ -170,13 +170,16 @@ public class ProductController {
     }
 
     @GetMapping("/productDetails/{id}")
-    public String productDetails(@PathVariable("id") Long product_id, Model model){
+    public String productDetails(@PathVariable("id") Long product_id, Model model) {
         Optional<Product> productGet = this.productService.findById(product_id);
         Product product = productGet.get();
-        Optional<List<Review>> reviews= reviewService.findAllByProduct(product);
-        List<Review> reviewList = reviews.isPresent()? reviews.get():null;
-        model.addAttribute("reviews",reviewList);
-        model.addAttribute("product",product);
+        Optional<List<Review>> reviews = reviewService.findAllByProduct(product);
+        if (reviews.isPresent())
+            model.addAttribute("reviews", reviews.get());
+        else model.addAttribute("reviews", null);
+        model.addAttribute("product", product);
+        Review r = new Review(new Product(product_id));
+        model.addAttribute("review", r);
 
         //logic  for follow and unfollow display
         Set<User> followerList = product.getUser().getFollowings();
@@ -185,8 +188,7 @@ public class ProductController {
             userNameList.add(u.getUserName());
         }
         model.addAttribute("userNameList", userNameList);
-
-        return  "product/single-product";
+        return "product/single-product";
 
     }
 
