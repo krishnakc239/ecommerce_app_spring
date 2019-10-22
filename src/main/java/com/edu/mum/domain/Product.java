@@ -21,8 +21,9 @@ public class Product {
 
     @NotNull(message = "Product price is required")
     private Double price;
+
     @Column(columnDefinition = "integer default 1")
-    private int quantity ;
+    private int stock;
 
     private String coverImage;
     @NotBlank(message = "Please provide the product description")
@@ -108,15 +109,15 @@ public class Product {
         this.user = user;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getStock() {
+        return stock;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
-    public void updateQuantity(){
-        this.quantity++;
+    public void updateStock() {
+        this.stock++;
     }
 }

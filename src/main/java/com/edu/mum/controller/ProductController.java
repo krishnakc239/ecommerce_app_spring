@@ -79,7 +79,7 @@ public class ProductController {
             }
             List<Product> savedProduct = productService.findAllByCode(product.getCode());
             if (savedProduct.size() > 1) {
-                product.updateQuantity();
+                product.updateStock();
             }
             if (!imgFile.getOriginalFilename().isEmpty()) {
                 Path fileNameAndPath = Paths.get(upload_dir, imgFile.getOriginalFilename());

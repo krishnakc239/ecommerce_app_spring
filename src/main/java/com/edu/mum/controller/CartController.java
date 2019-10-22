@@ -6,12 +6,14 @@ import com.edu.mum.service.CreditCardService;
 import com.edu.mum.service.OrderService;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.util.SessionUtils;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -38,21 +40,23 @@ public class CartController {
     Double shippingCost = 0.0;
 
     @GetMapping("/addToCart/{pid}")
-    public String addToCart(
-            @PathVariable Integer pid,
-            @RequestParam(defaultValue = "1") String orderQuantity,
-            Model model) {
-        Optional<Product> product = productService.findById(Long.valueOf(pid));
-        Product addedProduct = product.isPresent() ? product.get() : new Product();
-        CartItem cartItem = new CartItem();
-        cartItem.setProduct(addedProduct);
-        cartItem.setQuantity(Integer.parseInt(orderQuantity));
-        cartItem.setStock(addedProduct.getQuantity());
-        cartItem.setUser(sessionUtils.getCurrentUser());
-        cartItem.setAmount(addedProduct.getPrice()*addedProduct.getQuantity());
+    public String addToCart(@PathVariable Long pid) {
+        Optional<Product> product = productService.findById(pid);
+        if (product.isPresent()) {
+            Product p = product.get();
+            if (p.getStock() > 0) {
+                p.setStock(p.getStock() - 1);//decrease stock of product
+                CartItem cartItem = new CartItem();
+                cartItem.setProduct(p);
+                cartItem.setQuantity(1);
+                cartItem.setUser(sessionUtils.getCurrentUser());
+                productService.save(p);
+                cartItemService.save(cartItem);
+            } else {
+                //out of stock
+            }
+        }
 
-        cartItemService.save(cartItem);
-        //model.addAttribute("cartList", cartItemService.findAllByUser());
         return "redirect:/shoppingCart";
     }
 
@@ -79,12 +83,6 @@ public class CartController {
         return "product/shop";
     }
 
-    /*
-        @ModelAttribute(name = "subtotal")
-        public double getTotalAmount() {
-            return cartItemService.getTotalAmount();
-        }
-    */
     @ModelAttribute(name = "numberOfProducts")
     public int getNumberOfProducts() {
         return cartItemService.getNumberOfProducts();
@@ -108,10 +106,57 @@ public class CartController {
 
     @PostMapping("/calcShipping")
     public String getShippingCost(@ModelAttribute ShipCountry country) {
-        System.out.println(country);
+        System.out.println("/calcShipping:" + country);
         shippingCost = shipCountries.get(country.getCountryCode()).getCost();
         return "redirect:/shoppingCart";
     }
+
+    @GetMapping("/removeItem/{iid}")
+    public String removeItem(@PathVariable Long iid) {
+        System.out.println("/removeItem iid:" + iid);
+        cartItemService.deleteById(iid);
+        return "redirect:/shoppingCart";
+    }
+
+    @GetMapping("/incQuantity/{iid}")
+    public String incQuantity(@PathVariable Long iid) {
+        System.out.println("/incQuantity iid:" + iid);
+        Optional<CartItem> o = cartItemService.findById(iid);
+        if (o.isPresent()) {
+            CartItem c = o.get();
+            if (c.getProduct().getStock() > 0) {
+                Product p = productService.findById(c.getProduct().getId()).get();
+                p.setStock(p.getStock() - 1);
+                c.setQuantity(c.getQuantity() + 1);
+                cartItemService.save(c);
+                productService.save(p);
+            } else {
+                //product not in stock
+            }
+        }
+
+        return "redirect:/shoppingCart";
+    }
+
+    @GetMapping("/decQuantity/{iid}")
+    public String decQuantity(@PathVariable Long iid) {
+        System.out.println("/decQuantity iid:" + iid);
+        Optional<CartItem> o = cartItemService.findById(iid);
+        if (o.isPresent()) {
+            CartItem c = o.get();
+            if (c.getQuantity() == 1)
+                cartItemService.delete(c);
+            else {
+                c.setQuantity(c.getQuantity() - 1);
+                cartItemService.save(c);
+            }
+            Product p = productService.findById(c.getProduct().getId()).get();
+            p.setStock(p.getStock() + 1);
+            productService.save(p);
+        }
+        return "redirect:/shoppingCart";
+    }
+
 
     @PostMapping("/placeOrder")
     public String getPaymentPage(@ModelAttribute Order order,RedirectAttributes redirectAttributes){

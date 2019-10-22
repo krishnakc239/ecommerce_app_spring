@@ -97,7 +97,8 @@
                                     <tbody>
                                     <tr class="cart_item" th:each="c : ${cartList}">
                                         <td class="product-remove">
-                                            <a class="remove" href="#" title="Remove this item">×</a>
+                                            <a class="remove" th:href="@{/removeItem/{iid} (iid =${c.id})}"
+                                               title="Remove this item">×</a>
                                         </td>
 
                                         <td class="product-thumbnail">
@@ -117,18 +118,17 @@
 
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
-                                                <input class="minus" type="button" value="-">
-                                                <input class="input-text qty text" id="quantityField" min="0"
-                                                       size="4" step="1" th:max="${c.product.quantity}"
+                                                <a class="minus" th:href="@{/decQuantity/{iid} (iid =${c.id})}">-</a>
+                                                <input class="input-text qty text" min="0" size="4"
+                                                       step="1" th:id="${c.id}"
                                                        th:value="${c.quantity}" title="Qty" type="number">
-                                                <input class="plus" type="button" value="+">
+                                                <a class="plus" th:href="@{/incQuantity/{iid} (iid =${c.id})}">+</a>
                                             </div>
-                                            <button onclick="updateQuantity(${c.product.id})">Update</button>
                                         </td>
 
                                         <td class="product-subtotal">
                                             <span class="amount" id="totalProductAmt"
-                                                  th:value="${c.amount}">£15.00</span>
+                                                  th:text="${c.product.price}*${c.quantity}">£15.00</span>
                                         </td>
 
                                     </tr>
@@ -142,7 +142,7 @@
                                                 <input class="button" name="apply_coupon" type="submit"
                                                        value="Apply Coupon">
                                             </div>
-                                            <input class="button" type="submit" value="Update Cart">
+                                            <!--                                            <input class="button" type="submit" value="Update Cart">-->
                                             <!--                                                <form th:action="@{/checkout}" method="get">-->
                                             <!--                                                <input type="submit" value="Checkout" class="btn-info">-->
                                             <!--                                                </form>-->

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartItemServiceImpl implements CartItemService {
@@ -43,5 +44,13 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public int getNumberOfProducts() {
         return this.findAllByUser().size();
+    }
+
+    public void deleteById(Long aLong) {
+        cartItemRepository.deleteById(aLong);
+    }
+
+    public Optional<CartItem> findById(Long aLong) {
+        return cartItemRepository.findById(aLong);
     }
 }

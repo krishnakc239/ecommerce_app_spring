@@ -6,7 +6,6 @@ import com.edu.mum.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +50,11 @@ public  class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> findAllByNameContainingIgnoreCaseOrCategory_CategoryNameContainingIgnoreCase(String name, String category, int page) {
         return productRepository.findAllByNameContainingIgnoreCaseOrCategory_CategoryNameContainingIgnoreCase(name,category,new PageRequest(subtractPageByOne(page), 5));
+    }
+
+    @Override
+    public Product save(Product p) {
+        return productRepository.save(p);
     }
 
     private int subtractPageByOne(int page) {

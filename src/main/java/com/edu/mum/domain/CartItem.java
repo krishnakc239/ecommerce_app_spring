@@ -24,14 +24,8 @@ public class CartItem {
     private Order order;
 
     @NotNull
-    private Integer stock;
-
-    @NotNull
     @Column(columnDefinition = "integer default 1")
     private Integer quantity;
-
-    private Double amount;
-
 
     public CartItem(){}
 
@@ -59,22 +53,6 @@ public class CartItem {
         this.product = product;
     }
 
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -89,9 +67,7 @@ public class CartItem {
                 "id=" + id +
                 ", user=" + user +
                 ", product=" + product +
-                ", stock=" + stock +
                 ", quantity=" + quantity +
-                ", amount=" + amount +
                 '}';
     }
 

@@ -3,6 +3,7 @@ package com.edu.mum.service;
 import com.edu.mum.domain.CartItem;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CartItemService {
 
@@ -14,4 +15,8 @@ public interface CartItemService {
     Double getSubTotal();
 
     int getNumberOfProducts();
+
+    void deleteById(Long aLong);
+
+    Optional<CartItem> findById(Long aLong);
 }

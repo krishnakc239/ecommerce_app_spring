@@ -10,7 +10,7 @@ insert into roles (id, role) values (1, 'ROLE_ADMIN');
 insert into roles (id, role) values (2, 'ROLE_SELLER');
 insert into roles (id, role) values (3, 'ROLE_BUYER');
 
-insert into products (id,code,cover_image,description,name,price,category_id,user_id,quantity)
+insert into products (id,code,cover_image,description,name,price,category_id,user_id,stock)
 values
 (null,'A1', 'product-5.jpg','Apple best phone','Iphone 6',500,1,2,3),
 (null,'SM1','product-4.jpg','Sony best phone','Sony Microsoft',300,1,2,4),

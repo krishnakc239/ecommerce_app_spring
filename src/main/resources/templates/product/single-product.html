@@ -1,6 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{common/masterLayout}">
 <head>
     <title>Product List</title>
@@ -80,13 +79,13 @@
                                     <div class="product-inner-price">
                                         <ins th:text="${'$'+ product.price }">$700.00</ins>
                                         <br>
-                                        <label th:text="${'Available :'+ product.quantity}"></label>
+                                        <label th:text="${'Available :'+ product.stock}"></label>
                                     </div>
 
                                     <form th:action="@{/addToCart/{pid}(pid =${product.id})}" class="cart">
                                         <div class="quantity">
                                             <input type="number" size="4" class="input-text qty text" title="Qty"
-                                                   value="1" name="orderQuantity" min="1" th:max="${product.quantity}"
+                                                   min="1" name="orderQuantity" th:max="${product.stock}" value="1"
                                                    step="1">
                                         </div>
                                         <button class="add_to_cart_button" type="submit">Add to cart</button>
