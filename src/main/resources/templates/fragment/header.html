@@ -61,10 +61,7 @@
 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="#" th:href="@{/shoppingCart}">Cart - <span class="cart-amunt"
-                                                                            th:text="${subtotal}">$0</span> <i
-                                class="fa fa-shopping-cartItem"></i><span class="product-count"
-                                                                          th:text="${numberOfProducts}">0</span></a>
+                        <a href="cart.html">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
                     </div>
                 </div>
             </div>
@@ -85,12 +82,10 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.html">Home</a></li>
-                        <li><a href="#" sec:authorize ="hasAnyRole('ROLE_SELLER','ROLE_ADMIN','ROLE_BUYER')" th:href="@{/dashboard}">Dashboard</a></li>
-                        <li class="active"><a href="#" th:href="@{/}">Home</a></li>
                         <li><a href="#" sec:authorize ="hasAnyRole('ROLE_SELLER','ROLE_ADMIN')" th:href="@{/dashboard}">Dashboard</a></li>
                         <li><a href="shop.html">Shop page</a></li>
                         <li><a href="single-product.html">Single product</a></li>
-                        <li><a href="#" th:href="@{/shoppingCart}">Cart</a></li>
+                        <li><a href="cart.html">Cart</a></li>
                         <li><a href="checkout.html">Checkout</a></li>
                         <li><a href="#">Category</a></li>
                         <li><a href="#">Others</a></li>

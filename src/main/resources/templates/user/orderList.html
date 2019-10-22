@@ -40,7 +40,7 @@
                                 <th>Order Date</th>
                                 <th>Order List</th>
                                 <th>Billing Address</th>
-                                <th>Shiping Address</th>
+                                <th>Shipping Address</th>
                                 <th>Status</th>
                             </tr>
                             </thead>
@@ -55,7 +55,7 @@
                                     <span th:text="${p.product.name}"></span>
                                 </p></td>
                                 <td th:text="${o.billingAddress.city+','+o.billingAddress.state+','+o.billingAddress.country+','+o.billingAddress.zipCode}"></td>
-                                <td th:text="${o.shippingAddress.city+','+o.shippingAddress.state+','+o.shippingAddress.country+','+o.shippingAddress.zipCode}"></td>
+                                <td th:text="${o.billingAddress.city+','+o.billingAddress.state+','+o.billingAddress.country+','+o.billingAddress.zipCode}"></td>
                                 <td th:text="${o.status}"></td>
                             </tr>
                             </tbody>
