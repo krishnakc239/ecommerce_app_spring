@@ -1,6 +1,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{common/masterLayout}">
+
 <head>
     <title>Product List</title>
 </head>
@@ -82,7 +84,7 @@
                                         <label th:text="${'Available :'+ product.stock}"></label>
                                     </div>
 
-                                    <form th:action="@{/addToCart/{pid}(pid =${product.id})}" class="cart">
+                                    <form sec:authorize="hasRole('ROLE_BUYER')" th:action="@{/addToCart/{pid}(pid =${product.id})}" class="cart">
                                         <div class="quantity">
                                             <input type="number" size="4" class="input-text qty text" title="Qty"
                                                    min="1" name="orderQuantity" th:max="${product.stock}" value="1"
@@ -115,7 +117,7 @@
                                             <div role="tabpanel" class="tab-pane fade" id="profile">
                                                 <h2>Reviews</h2>
                                                 <div class="submit-review">
-                                                    <form th:action="@{/review/create}" th:object="${review}"
+                                                    <form sec:authorize="hasRole('ROLE_BUYER')" th:action="@{/review/create}" th:object="${review}"
                                                           method="post">
                                                         <div class="form-group">
                                                             <div th:class="${successMessage} ? 'alert alert-success' : ''"
@@ -134,7 +136,7 @@
 
                                                         </div>
                                                         </p>
-                                                        <p><input type="submit" value="Submit"></p>
+                                                        <p><input sec:authorize="hasRole('ROLE_BUYER')" type="submit" value="Submit"></p>
                                                     </form>
                                                 </div>
                                             </div>
