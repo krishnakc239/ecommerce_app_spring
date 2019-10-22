@@ -114,10 +114,10 @@
                                                     varius lorem lorem, semper bibendum lectus lobortis ac.</p>
 
                                             </div>
-                                            <div role="tabpanel" class="tab-pane fade" id="profile">
+                                            <div role="tabpanel" class="tab-pane fade" id="profile" sec:authorize="hasRole('ROLE_BUYER')">
                                                 <h2>Reviews</h2>
                                                 <div class="submit-review">
-                                                    <form sec:authorize="hasRole('ROLE_BUYER')" th:action="@{/review/create}" th:object="${review}"
+                                                    <form  th:action="@{/review/create}" th:object="${review}"
                                                           method="post">
                                                         <div class="form-group">
                                                             <div th:class="${successMessage} ? 'alert alert-success' : ''"
