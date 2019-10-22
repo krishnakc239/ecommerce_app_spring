@@ -86,18 +86,22 @@ jQuery(document).ready(function($){
     })
 
     $("#same_as_billing").on("change", function(){
-        console.log("chek box clickedd")
         if (this.checked) {
-            $("[name='shipping_first_name']").val($("[name='billing_first_name']").val());
-            $("[name='shipping_last_name']").val($("[name='biling_last_name']").val());
-            $("[name='shipping_city']").val($("[name='billing_city']").val());
-            $("[name='shipping_state']").val($("[name='billing_state']").val());
-            $("[name='shipping_postcode']").val($("[name='billing_postcode']").val());
-            $("[name='shipping_email']").val($("[name='billing_email']").val());
-            $("[name='shipping_phone']").val($("[name='billing_phone']").val());
-            // $("[name='shipping_country']").val($("[name='billing_']").val());
+            $("#shipping_first_name").val($("#billing_first_name").val());
+            $("#shipping_last_name").val($("#billing_last_name").val());
+            $("#shipping_city").val($("#billing_city").val());
+            $("#shipping_state").val($("#billing_state").val());
+            $("#shipping_postcode").val($("#billing_postcode").val());
+            $("#shipping_email").val($("#billing_email").val());
+            $("#shipping_phone").val($("#billing_phone").val());
+            $("#shipping_country").val($("#billing_country").val());
+            // $("#shipping_country").val($("#billing_").val());
         }
     });
+
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 });
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
