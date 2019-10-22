@@ -5,15 +5,14 @@ import com.edu.mum.service.CartItemService;
 import com.edu.mum.service.CreditCardService;
 import com.edu.mum.service.OrderService;
 import com.edu.mum.service.ProductService;
+import com.edu.mum.util.Pager;
 import com.edu.mum.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -79,7 +78,10 @@ public class CartController {
     }
 
     @GetMapping("/shop")
-    public String shop() {
+    public String shop(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<Product> productList = productService.findAllProducts(page);
+        Pager pager = new Pager(productList);
+        model.addAttribute("pager",pager);
         return "product/shop";
     }
 

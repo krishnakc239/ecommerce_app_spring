@@ -86,7 +86,7 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#" th:href="@{/}">Home</a></li>
                         <li><a href="#" sec:authorize ="hasAnyRole('ROLE_SELLER','ROLE_ADMIN','ROLE_BUYER')" th:href="@{/dashboard}">Dashboard</a></li>
-                        <li><a href="shop.html">Shop page</a></li>
+                        <li><a href="#" th:href="@{/shop}">Shop page</a></li>
                         <li><a href="single-product.html">Single product</a></li>
                         <li><a href="#" th:href="@{/shoppingCart}">Cart</a></li>
                         <li><a href="checkout.html">Checkout</a></li>
