@@ -120,11 +120,36 @@ public class UserController {
     public String OrderList(@RequestParam(defaultValue = "0") int page, Model model) {
         Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Page<Order> orderList = this.orderService.findAllByUser(user.get(), page);
-        System.out.println("he he" + orderList);
         Pager pager = new Pager(orderList);
         model.addAttribute("pager", pager);
         return "user/orderList";
     }
 
+    @GetMapping("/seller/OrderList")
+    public String SellerOrderList(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<Order> orderList = this.orderService.findAll(page);
+        Pager pager = new Pager(orderList);
+        model.addAttribute("pager", pager);
+        return "user/sellerOrderList";
+    }
+
+    @GetMapping("seller/order/statusChange/{id}/{status}")
+    public String changeOrderStatus(@PathVariable Long id, @PathVariable String status) {
+        Order order = orderService.findOrderById(id);
+        order.setStatus(status);
+        orderService.save(order);
+        return "redirect:/seller/OrderList";
+    }
+
+    @GetMapping("buyer/order/statusChange/{id}/{status}")
+    public String OrderList(@PathVariable Long id, @PathVariable String status) {
+        Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Order order = orderService.findOrderById(id);
+        if (order.getUser().getId() == user.get().getId()) {
+            order.setStatus(status);
+            orderService.save(order);
+        }
+        return "redirect:/orderList";
+    }
 
 }

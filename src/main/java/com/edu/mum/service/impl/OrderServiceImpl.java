@@ -40,6 +40,16 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByUser(user,new PageRequest(subtractPageByOne(page),10));
     }
 
+    @Override
+    public Page<Order> findAll(int page) {
+        return orderRepository.findAll(new PageRequest(subtractPageByOne(page),10));
+    }
+
+    @Override
+    public Order findOrderById(Long id) {
+        return orderRepository.getOne(id);
+    }
+
     private int subtractPageByOne(int page) {
         return (page < 1) ? 0 : page - 1;
     }

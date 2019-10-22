@@ -43,7 +43,7 @@
                             <th>Status</th>
                             <th>Paid</th>
                             <th>Contact</th>
-                            <th>Cancel</th>
+                            <th>Change Status</th>
                         </tr>
                         </thead>
 
@@ -61,8 +61,13 @@
                             <td th:text="${o.status}"></td>
                             <td th:text="${o.paid}?'Yes':'No'"></td>
                             <td th:text="${o.contact}"></td>
-                            <td ><span th:if="${o.status}=='Ordered'"><a  th:href="@{buyer/order/statusChange/{id}/{status}(id=${o.id},status='Canceled')}">Cancel</a></span>
-                            <span th:unless="${o.status}=='Ordered'">After Shipped You can't cancel</span>
+                            <td>
+                                <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Ordered')}">Ordered</a><br>
+                                <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Shipped')}">Shipped</a><br>
+                                <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='On the way')}">On the
+                                    way</a><br>
+                                <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Delivered')}">Delivered</a><br>
+                                <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Canceled')}">Canceled</a><br>
                             </td>
                         </tr>
                         </tbody>
@@ -71,7 +76,7 @@
                 <div class="row">
                     <!--                     <div class="row form-row "> &ndash;&gt;-->
                     <div class="form-group col-lg-8col-lg-12">
-                        <div th:replace="/fragment/pagination :: pagination(URLparameter='/orderList')"></div>
+                        <div th:replace="/fragment/pagination :: pagination(URLparameter='/seller/OrderList')"></div>
                     </div>
                 </div>
 
