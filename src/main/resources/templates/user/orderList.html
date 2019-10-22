@@ -1,0 +1,79 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{common/masterLayout}">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <div class="row">
+            <div th:insert="fragment/sidebar :: sidebar">
+
+            </div>
+
+
+            <!-- table with search bar-->
+            <div class="col-md-9">
+                <!--                <div class="container">-->
+                <div class="row">
+                    <div class="row">
+                        <!--                            search bar  -->
+                        <div class="col-md-6">
+                            <form class="input-group" th:action="@{/searchOrder}" method="get">
+                                <input name="searchParameter" type="search" class="btn btn-default"
+                                       placeholder="search.."/>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-info" th:if="${message}" th:utext="${message}"></div>
+                        <!-- <div class="page-title pull-left" th:if="${#authentication.getName() != null}" th:text="My Posts List"></div>-->
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Order Number</th>
+                                <th>Order Date</th>
+                                <th>Order List</th>
+                                <th>Billing Address</th>
+                                <th>Shiping Address</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="o,i : ${pager.pagerObjects}">
+
+                                <td th:text="${i.count}"></td>
+                                <td th:text="${o.orderNum}"></td>
+                                <td th:text="${o.orderDate}"></td>
+                                <td><p th:each="p:${o.cartItemList}">
+                                    <span th:text="${p.product.name}"></span>
+                                </p></td>
+                                <td th:text="${o.billingAddress.city+','+o.billingAddress.state+','+o.billingAddress.country+','+o.billingAddress.zipCode}"></td>
+                                <td th:text="${o.shippingAddress.city+','+o.shippingAddress.state+','+o.shippingAddress.country+','+o.shippingAddress.zipCode}"></td>
+                                <td th:text="${o.status}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <!--                     <div class="row form-row "> &ndash;&gt;-->
+                        <div class="form-group col-lg-8col-lg-12">
+                            <div th:replace="/fragment/pagination :: pagination(URLparameter='/reviewList')"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--                </div>-->
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
