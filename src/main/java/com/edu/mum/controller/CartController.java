@@ -188,13 +188,12 @@ public class CartController {
         return "product/payment";
     }
     @PostMapping("/pay/{oid}")
-    public String pay(@Valid @ModelAttribute CreditCardInfo credit,
-                      BindingResult bindingResult,@PathVariable Long oid, Model model,HttpSession session){
+    public String pay(@Valid @ModelAttribute("credit") CreditCardInfo credit,
+                      BindingResult bindingResult,@PathVariable Long oid, Model model, HttpSession session){
         Order order = orderService.findById(oid);
         System.out.println(credit);
         if (bindingResult.hasErrors()){
             model.addAttribute("order",order);
-            System.out.println(bindingResult.getAllErrors());
             return "product/payment";
         }else {
             Optional<CreditCardInfo> creditCard = creditCardService.findByCardNumber(credit.getCardNumber());
