@@ -13,7 +13,7 @@
                 <div class="latest-product">
                     <h2 class="section-title">Latest Products</h2>
                     <div class="product-carousel" >
-                        <div class="single-product" th:each="product : ${pager.pagerObjects}">
+                        <div class="single-product" th:each="product : ${pager.pagerObjects}" th:if="${product.stock >0}">
                             <div class="product-f-image">
 <!--                                <img src="img/product-1.jpg" alt="">-->
                                 <img class="img-responsive" th:src="@{${'/uploads/images/'+product.coverImage}}" alt="">
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
 
-                            <h2><a href="../single-product.html" th:text="${product.name}"></a></h2>
+                            <h2><a href="../single-product.html" th:text="${product.name}"> </a></h2><span th:text="${'Items: '+product.stock}"></span>
 
                             <div class="product-carousel-price">
                                 <ins th:text="'$'+${product.price}"></ins> <del>$100.00</del>
