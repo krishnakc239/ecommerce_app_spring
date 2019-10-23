@@ -191,8 +191,10 @@ public class CartController {
     public String pay(@Valid @ModelAttribute("credit") CreditCardInfo credit,
                       BindingResult bindingResult,@PathVariable Long oid, Model model, HttpSession session){
         Order order = orderService.findById(oid);
-        System.out.println(credit);
         if (bindingResult.hasErrors()){
+            model.addAttribute("shipping", shippingCost);
+            model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
+            model.addAttribute("credit",credit);
             model.addAttribute("order",order);
             return "product/payment";
         }else {
