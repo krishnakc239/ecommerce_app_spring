@@ -27,6 +27,8 @@ public class CartItem {
     @Column(columnDefinition = "integer default 1")
     private Integer quantity;
 
+    private boolean delevered;
+
     public CartItem(){}
 
     public Long getId() {
@@ -77,5 +79,13 @@ public class CartItem {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public boolean isDelevered() {
+        return delevered;
+    }
+
+    public void setDelevered(boolean delevered) {
+        this.delevered = delevered;
     }
 }
