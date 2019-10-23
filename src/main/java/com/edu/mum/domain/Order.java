@@ -3,6 +3,7 @@ package com.edu.mum.domain;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -28,10 +29,11 @@ public class Order {
     @OneToMany
     @JoinColumn(name = "order_id")
     private List<CartItem> cartItemList;
-
+    @Valid
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "billing_addr_id")
     private Address billingAddress;
+    @Valid
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_addr_id")
     private Address shippingAddress;

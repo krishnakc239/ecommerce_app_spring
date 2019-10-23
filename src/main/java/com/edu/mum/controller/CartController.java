@@ -52,7 +52,7 @@ public class CartController {
 
     @ModelAttribute(name = "cartList")
     public List<CartItem> getCartItemList() {
-        return cartItemService.findAllByUserAndDelivered(sessionUtils.getCurrentUser(),false);
+        return cartItemService.findAllByUserAndDelivered(sessionUtils.getCurrentUser(), false);
     }
 
     @GetMapping("/addToCart/{pid}")
@@ -76,10 +76,10 @@ public class CartController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(Model model){
+    public String checkout(Model model) {
         Order order = new Order();
         order.setUser(sessionUtils.getCurrentUser());
-        model.addAttribute("order",order);
+        model.addAttribute("order", order);
         return "product/checkout";
     }
 
@@ -87,7 +87,7 @@ public class CartController {
     public String shop(@RequestParam(defaultValue = "0") int page, Model model) {
         Page<Product> productList = productService.findAllProducts(page);
         Pager pager = new Pager(productList);
-        model.addAttribute("pager",pager);
+        model.addAttribute("pager", pager);
         return "product/shop";
     }
 
@@ -172,7 +172,11 @@ public class CartController {
 
 
     @PostMapping("/placeOrder")
-    public String getPaymentPage(@ModelAttribute Order order,RedirectAttributes redirectAttributes){
+    public String getPaymentPage(@Valid @ModelAttribute("order") Order order, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("order", order);
+            return "product/checkout";
+        }
         order.setUser(sessionUtils.getCurrentUser());
         order.setSubTotal(cartItemService.getSubTotal());
         order.setShipping(shippingCost);
@@ -180,62 +184,63 @@ public class CartController {
         order.setTotalAmount(cartItemService.getSubTotal() + shippingCost - rewardsUsed);
         order.setStatus("Ordered");
         orderService.save(order);
-        redirectAttributes.addFlashAttribute("order",order);
+        redirectAttributes.addFlashAttribute("order", order);
         return "redirect:/payment";
     }
 
     @GetMapping("/payment")
-    public String  showPaymentForm(@ModelAttribute CreditCardInfo credit, Model model){
+    public String showPaymentForm(@ModelAttribute CreditCardInfo credit, Model model) {
         model.addAttribute("shipping", shippingCost);
         model.addAttribute("rewards", rewardsUsed);
         model.addAttribute("total", cartItemService.getSubTotal() + shippingCost - rewardsUsed);
-        model.addAttribute("credit",new CreditCardInfo());
+        model.addAttribute("credit", new CreditCardInfo());
         return "product/payment";
     }
+
     @PostMapping("/pay/{oid}")
     public String pay(@Valid @ModelAttribute("credit") CreditCardInfo credit,
-                      BindingResult bindingResult,@PathVariable Long oid, Model model, HttpSession session){
+                      BindingResult bindingResult, @PathVariable Long oid, Model model, HttpSession session) {
         Order order = orderService.findById(oid);
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("shipping", shippingCost);
             model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
-            model.addAttribute("credit",credit);
-            model.addAttribute("order",order);
+            model.addAttribute("credit", credit);
+            model.addAttribute("order", order);
             return "product/payment";
-        }else {
+        } else {
             Optional<CreditCardInfo> creditCard = creditCardService.findByCardNumber(credit.getCardNumber());
-            if (creditCard.isPresent()){
+            if (creditCard.isPresent()) {
                 creditCardService.updateAmount(credit);
                 order.setPaid(true);
                 updateCartItemsByUser();
-                updateUserRewardPoint(order,session);
-                model.addAttribute("order",order);
-                model.addAttribute("subtotal",cartItemService.getSubTotal());
-                model.addAttribute("numberOfProducts",cartItemService.getNumberOfProductsByUser());
-                model.addAttribute("message","Congratulation !! Your order is placed and ready to be shipped and deliver within 3 business days");
+                updateUserRewardPoint(order, session);
+                model.addAttribute("order", order);
+                model.addAttribute("subtotal", cartItemService.getSubTotal());
+                model.addAttribute("numberOfProducts", cartItemService.getNumberOfProductsByUser());
+                model.addAttribute("message", "Congratulation !! Your order is placed and ready to be shipped and deliver within 3 business days");
                 return "product/orderSummary";
-            }else {
-                model.addAttribute("message","This credit card is not valid");
-                model.addAttribute("order",order);
+            } else {
+                model.addAttribute("message", "This credit card is not valid");
+                model.addAttribute("order", order);
                 return "product/payment";
             }
         }
     }
 
-    private void updateUserRewardPoint(Order order, HttpSession session){
+    private void updateUserRewardPoint(Order order, HttpSession session) {
         double totalAmt = order.getTotalAmount();
         double prevPoint = order.getUser().getPoints();
         double rewardPoint = 0.00;
-        if (totalAmt < 10){
-            rewardPoint=1;
-        }else if (totalAmt>= 10 && totalAmt < 100 ){
+        if (totalAmt < 10) {
+            rewardPoint = 1;
+        } else if (totalAmt >= 10 && totalAmt < 100) {
             rewardPoint = 5;
-        }else if (totalAmt >=100 && totalAmt < 500){
-            rewardPoint=10;
-        }else if (totalAmt >=500 && totalAmt < 1000){
-            rewardPoint=15;
-        }else {
-            rewardPoint =20;
+        } else if (totalAmt >= 100 && totalAmt < 500) {
+            rewardPoint = 10;
+        } else if (totalAmt >= 500 && totalAmt < 1000) {
+            rewardPoint = 15;
+        } else {
+            rewardPoint = 20;
         }
         prevPoint += rewardPoint;
         order.getUser().setPoints(prevPoint);
@@ -243,15 +248,15 @@ public class CartController {
         User currentuser = sessionUtils.getCurrentUser();
         currentuser.setPoints(prevPoint - rewardsUsed);
         rewardsUsed = 0.0;
-        session.setAttribute("loggedInUser",currentuser);
+        session.setAttribute("loggedInUser", currentuser);
         orderService.save(order);
         //update user rewards
     }
 
-    private void updateCartItemsByUser(){
+    private void updateCartItemsByUser() {
         User user = sessionUtils.getCurrentUser();
-        List<CartItem> cartItems =cartItemService.findAllByUserAndDelivered(user,false);
-        for (CartItem c:cartItems  ) {
+        List<CartItem> cartItems = cartItemService.findAllByUserAndDelivered(user, false);
+        for (CartItem c : cartItems) {
             c.setDelevered(true);
             cartItemService.save(c);
         }
