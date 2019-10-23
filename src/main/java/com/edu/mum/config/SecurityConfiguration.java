@@ -45,9 +45,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+        http.headers().frameOptions().sameOrigin();
 
         http.authorizeRequests()
-                .antMatchers("/","/login","/signup","/register", "/home/index","/shop").permitAll()
+                .antMatchers("/","/login","/signup","/register", "/home/index","/shop","/h2-console/**").permitAll()
                 .antMatchers("/dashboard/","/productList").hasAnyRole("ADMIN","SELLER")
                 .antMatchers("/product/**").hasRole("SELLER")
                 .anyRequest().authenticated()

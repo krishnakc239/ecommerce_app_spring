@@ -15,7 +15,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="single-sidebar">
+                    <div class="single-sidebar" sec:authorize="hasRole('ROLE_BUYER')">
                         <h2 class="sidebar-title" th:text="${'Seller: '+product.user.firstName+','+product.user.lastName}"></h2>
                         <div th:if="${not #lists.isEmpty(userNameList)}">
                             <div th:if="${#lists.contains(userNameList,#authentication.getName())}">
