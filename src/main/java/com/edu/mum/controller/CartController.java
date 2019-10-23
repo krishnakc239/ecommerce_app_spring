@@ -17,8 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 //@SessionAttributes("cartList")
@@ -62,8 +64,8 @@ public class CartController {
 
     @GetMapping("/shoppingCart")
     public String productAdded(Model model, @ModelAttribute(name = "country") ShipCountry country) {
-        model.addAttribute("cartList", cartItemService.findAllByUser());
-        model.addAttribute("numberOfProducts", cartItemService.getNumberOfProducts());
+        model.addAttribute("cartList", cartItemService.findAllByUserAndDelivered(sessionUtils.getCurrentUser(),false));
+        model.addAttribute("numberOfProducts", cartItemService.getNumberOfProductsByUser());
         model.addAttribute("subtotal", cartItemService.getSubTotal());
         model.addAttribute("shipping", shippingCost);
         model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
@@ -88,7 +90,7 @@ public class CartController {
 
     @ModelAttribute(name = "numberOfProducts")
     public int getNumberOfProducts() {
-        return cartItemService.getNumberOfProducts();
+        return cartItemService.getNumberOfProductsByUser();
     }
 
     @ModelAttribute("shipCountries")
@@ -194,6 +196,7 @@ public class CartController {
             if (creditCard.isPresent()){
                 creditCardService.updateAmount(credit);
                 order.setPaid(true);
+                updateCartItemsByUser();
                 updateUserRewardPoint(order);
                 model.addAttribute("order",order);
                 model.addAttribute("message","Congratulation !! Your order is placed and ready to be shipped");
@@ -227,6 +230,13 @@ public class CartController {
         orderService.save(order);
     }
 
-
+    private void updateCartItemsByUser(){
+        User user = sessionUtils.getCurrentUser();
+        List<CartItem> cartItems =cartItemService.findAllByUserAndDelivered(user,false);
+        for (CartItem c:cartItems  ) {
+            c.setDelevered(true);
+            cartItemService.save(c);
+        }
+    }
 
 }

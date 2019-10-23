@@ -43,7 +43,7 @@ public class HomeController {
 
     @ModelAttribute(name = "numberOfProducts")
     public int getNumberOfProducts() {
-        return cartItemService.getNumberOfProducts();
+        return cartItemService.getNumberOfProductsByUser();
     }
 
 
