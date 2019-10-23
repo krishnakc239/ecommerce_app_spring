@@ -81,84 +81,67 @@
                 <div class="col-md-8">
                     <div class="product-content-right">
                         <div class="woocommerce">
-                            <form action="#" method="post">
-                                <table cellspacing="0" class="shop_table cart">
-                                    <thead>
-                                    <tr>
-                                        <th class="product-remove">&nbsp;</th>
-                                        <th class="product-thumbnail">&nbsp;</th>
-                                        <th class="product-name">Product</th>
-                                        <th class="product-price">Price</th>
-                                        <th class="product-quantity">Quantity</th>
-                                        <th class="product-subtotal">Total</th>
+                            <!--                            <form action="#" method="post">-->
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                <tr>
+                                    <th class="product-remove">&nbsp;</th>
+                                    <th class="product-thumbnail">&nbsp;</th>
+                                    <th class="product-name">Product</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-quantity">Quantity</th>
+                                    <th class="product-subtotal">Total</th>
 
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="cart_item" th:each="c : ${cartList}">
-                                        <td class="product-remove">
-                                            <a class="remove" th:href="@{/removeItem/{iid} (iid =${c.id})}"
-                                               title="Remove this item">×</a>
-                                        </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="cart_item" th:each="c : ${cartList}">
+                                    <td class="product-remove">
+                                        <a class="remove" th:href="@{/removeItem/{iid} (iid =${c.id})}"
+                                           title="Remove this item">×</a>
+                                    </td>
 
-                                        <td class="product-thumbnail">
-                                            <a href="single-product.html"><img alt="poster_1_up" class="shop_thumbnail"
-                                                                               height="145"
-                                                                               th:src="@{${'/uploads/images/'+c.product.coverImage}}"
-                                                                               width="145"></a>
-                                        </td>
+                                    <td class="product-thumbnail">
+                                        <a href="single-product.html"><img alt="poster_1_up" class="shop_thumbnail"
+                                                                           height="145"
+                                                                           th:src="@{${'/uploads/images/'+c.product.coverImage}}"
+                                                                           width="145"></a>
+                                    </td>
 
-                                        <td class="product-name">
-                                            <a href="single-product.html" th:text="${c.product.name}"></a>
-                                        </td>
+                                    <td class="product-name">
+                                        <a href="single-product.html" th:text="${c.product.name}"></a>
+                                    </td>
 
-                                        <td class="product-price">
-                                            <span class="amount" id="price" th:text="${c.product.price}">£15.00</span>
-                                        </td>
+                                    <td class="product-price">
+                                        <span class="amount" id="price" th:text="${c.product.price}">£15.00</span>
+                                    </td>
 
-                                        <td class="product-quantity">
-                                            <div class="quantity buttons_added">
-                                                <a class="minus" th:href="@{/decQuantity/{iid} (iid =${c.id})}">-</a>
-                                                <input class="input-text qty text" min="0" size="4"
-                                                       step="1" th:id="${c.id}"
-                                                       th:value="${c.quantity}" title="Qty" type="number">
-                                                <a class="plus" th:href="@{/incQuantity/{iid} (iid =${c.id})}">+</a>
-                                            </div>
-                                        </td>
+                                    <td class="product-quantity">
+                                        <div class="quantity buttons_added">
+                                            <a class="minus"
+                                               th:href="@{/decQuantity/{iid} (iid =${c.id})}"><strong>-</strong></a>
+                                            <input class="input-text qty text" min="0" size="2"
+                                                   step="1" style="text-align: center"
+                                                   th:id="${c.id}" th:value="${c.quantity}" title="Qty"
+                                                   type="text">
+                                            <a class="plus"
+                                               th:href="@{/incQuantity/{iid} (iid =${c.id})}"><strong>+</strong></a>
+                                        </div>
+                                    </td>
 
-                                        <td class="product-subtotal">
+                                    <td class="product-subtotal">
                                             <span class="amount" id="totalProductAmt"
                                                   th:text="${c.product.price}*${c.quantity}">£15.00</span>
-                                        </td>
+                                    </td>
 
-                                    </tr>
-                                    <tr>
-                                        <td class="actions" colspan="6">
-                                            <div class="coupon">
-                                                <label for="coupon_code">Coupon:</label>
-                                                <input class="input-text" id="coupon_code" name="coupon_code"
-                                                       placeholder="Coupon code"
-                                                       type="text" value="">
-                                                <input class="button" name="apply_coupon" type="submit"
-                                                       value="Apply Coupon">
-                                            </div>
-                                            <!--                                            <input class="button" type="submit" value="Update Cart">-->
-                                            <!--                                                <form th:action="@{/checkout}" method="get">-->
-                                            <!--                                                <input type="submit" value="Checkout" class="btn-info">-->
-                                            <!--                                                </form>-->
-                                            <a th:href="@{/checkout}">Checkout</a>
-                                            <!--                                                <form >-->
-                                            <!--                                                <input type="submit" value="Checkout" class="btn-info">-->
-                                            <!--                                                </form>-->
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </form>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <!--                            </form>-->
+
 
                             <div class="cart-collaterals">
-
-
                                 <div class="cross-sells">
                                     <h2>You may be interested in...</h2>
                                     <ul class="products">
@@ -197,7 +180,6 @@
 
                                 <div class="cart_totals ">
                                     <h2>Cart Totals</h2>
-
                                     <table cellspacing="0">
                                         <tbody>
                                         <tr class="cart-subtotal">
@@ -211,11 +193,31 @@
                                             <td th:text="${shipping}" th:unless="${shipping}==0">Free Shipping</td>
                                         </tr>
 
+                                        <tr class="shipping">
+                                            <th>Rewards Used</th>
+                                            <td><strong><span class="amount"
+                                                              th:text="${rewards} ">£15.00</span></strong>
+                                            </td>
+                                        </tr>
+
                                         <tr class="order-total">
                                             <th>Order Total</th>
                                             <td><strong><span class="amount" th:text="${total} ">£15.00</span></strong>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                <form class="button" method="POST" th:action="@{/useRewards}">
+                                                    <input type="submit" value="Use Rewards"/>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form class="button" method="GET" th:action="@{/checkout}">
+                                                    <input type="submit" value="Checkout"/>
+                                                </form>
+                                            </td>
+                                        </tr>
+
                                         </tbody>
                                     </table>
                                 </div>

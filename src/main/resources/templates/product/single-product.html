@@ -82,16 +82,22 @@
                                         <ins th:text="${'$'+ product.price }">$700.00</ins>
                                         <br>
                                         <label th:text="${'Available :'+ product.stock}"></label>
+                                        <p style="color: red; text-decoration-line: underline;"
+                                           th:if="${product.stock}<=0"><strong>PRODUCT OUT OF STOCK.</strong></p>
                                     </div>
 
-                                    <form sec:authorize="hasRole('ROLE_BUYER')" th:action="@{/addToCart/{pid}(pid =${product.id})}" class="cart">
+                                    <form class="cart" sec:authorize="hasRole('ROLE_BUYER')"
+                                          th:action="@{/addToCart/{pid}(pid =${product.id})}" th:if="${product.stock}>0"
+                                          th:method="post" th:object="${simpleBean}">
                                         <div class="quantity">
-                                            <input type="number" size="4" class="input-text qty text" title="Qty"
-                                                   min="1" name="orderQuantity" th:max="${product.stock}" value="1"
-                                                   step="1">
+                                            <input class="input-text qty text" min="0" name="orderQuantity" size="4"
+                                                   step="1"
+                                                   th:field="*{intValue}" th:max="${product.stock}" title="Qty"
+                                                   type="number">
                                         </div>
                                         <button class="add_to_cart_button" type="submit">Add to cart</button>
                                     </form>
+
                                     <div role="tabpanel">
                                         <ul class="product-tab" role="tablist">
                                             <li role="presentation" class="active"><a href="#home" aria-controls="home"

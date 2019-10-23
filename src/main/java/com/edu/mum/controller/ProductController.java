@@ -2,11 +2,9 @@ package com.edu.mum.controller;
 
 import com.edu.mum.domain.Product;
 import com.edu.mum.domain.Review;
+import com.edu.mum.domain.SimpleBean;
 import com.edu.mum.domain.User;
-import com.edu.mum.service.CategoryService;
-import com.edu.mum.service.ProductService;
-import com.edu.mum.service.ReviewService;
-import com.edu.mum.service.UserService;
+import com.edu.mum.service.*;
 import com.edu.mum.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,6 +52,9 @@ public class ProductController {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    private CartItemService cartItemService;
 
     @GetMapping("/product/create")
     public String create(@ModelAttribute Product product, Model model) {
@@ -170,7 +171,7 @@ public class ProductController {
     }
 
     @GetMapping("/productDetails/{id}")
-    public String productDetails(@PathVariable("id") Long product_id, Model model) {
+    public String productDetails(@PathVariable("id") Long product_id, Model model, @ModelAttribute(name = "simpleBean") SimpleBean simpleBean) {
         Optional<Product> productGet = this.productService.findById(product_id);
         Product product = productGet.get();
         Optional<List<Review>> reviews = reviewService.findAllByProduct(product);
@@ -207,6 +208,16 @@ public class ProductController {
 
         javaMailSender.send(msg);
 
+    }
+
+    @ModelAttribute(name = "subtotal")
+    public double getTotalAmount() {
+        return cartItemService.getSubTotal();
+    }
+
+    @ModelAttribute(name = "numberOfProducts")
+    public int getNumberOfProducts() {
+        return cartItemService.getNumberOfProductsByUser();
     }
 
 

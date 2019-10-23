@@ -11,9 +11,14 @@
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
-                            <li><a href="#" th:href="@{/user/details}" ><i class="fa fa-user"></i> My Account</a></li>
-                            <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
-                            <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>
+                            <!--                            <li><a href="#" th:href="@{/user/details}" ><i class="fa fa-user"></i> My Account</a></li>-->
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/user/details}"><i
+                                    class="fa fa-user"></i> My Account</a></li>
+                            <li sec:authorize="hasRole('ROLE_BUYER')"><a th:href="@{/shoppingCart}"><i
+                                    class="fa fa-user"></i> Shopping Cart</a></li>
+                            <!--                            <li sec:authorize = "isAuthenticated()"><a th:href="@{/shoppingCart}"><i class="fa fa-user"></i>  Checkout</a></li>-->
+                            <!--                            <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>-->
+                            <!--                            <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>-->
                             <li sec:authorize = "!isAuthenticated()"><a th:href="@{/login}"><i class="fa fa-user"></i> Login</a></li>
                             <li sec:authorize = "!isAuthenticated()"><a th:href="@{/signup}"><i class="fa fa-user"></i> Sign Up</a></li>
                             <li sec:authorize = "isAuthenticated()"><a th:href="@{/logout}"><i class="fa fa-user"></i> Log out</a></li>
@@ -25,14 +30,14 @@
                 <div class="col-md-4">
                     <div class="header-right">
                         <ul class="list-unstyled list-inline">
-                            <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">currency :</span><span class="value">USD </span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">USD</a></li>
-                                    <li><a href="#">INR</a></li>
-                                    <li><a href="#">GBP</a></li>
-                                </ul>
-                            </li>
+                            <!--                            <li class="dropdown dropdown-small">-->
+                            <!--                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">currency :</span><span class="value">USD </span><b class="caret"></b></a>-->
+                            <!--                                <ul class="dropdown-menu">-->
+                            <!--                                    <li><a href="#">USD</a></li>-->
+                            <!--                                    <li><a href="#">INR</a></li>-->
+                            <!--                                    <li><a href="#">GBP</a></li>-->
+                            <!--                                </ul>-->
+                            <!--                            </li>-->
 
                             <li class="dropdown dropdown-small">
                                 <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">language :</span><span class="value">English </span><b class="caret"></b></a>
@@ -91,7 +96,7 @@
                         <li class="active"><a href="#" th:href="@{/}">Home</a></li>
                         <li><a href="#" sec:authorize ="hasAnyRole('ROLE_SELLER','ROLE_ADMIN','ROLE_BUYER')" th:href="@{/dashboard}">Dashboard</a></li>
                         <li><a href="#" th:href="@{/shop}">Shop page</a></li>
-                        <li><a href="single-product.html">Single product</a></li>
+                        <!--                        <li><a href="single-product.html">Single product</a></li>-->
                         <li><a href="#" th:href="@{/shoppingCart}" sec:authorize="hasRole('ROLE_BUYER')">Cart</a></li>
 <!--                        <li><a href="checkout.html">Checkout</a></li>-->
 <!--                        <li><a href="#">Category</a></li>-->

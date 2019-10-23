@@ -3,6 +3,7 @@ package com.edu.mum.controller;
 import com.edu.mum.domain.Order;
 import com.edu.mum.domain.Product;
 import com.edu.mum.domain.User;
+import com.edu.mum.service.CartItemService;
 import com.edu.mum.service.OrderService;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.service.UserService;
@@ -34,6 +35,9 @@ public class UserController {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    private CartItemService cartItemService;
 
     @GetMapping("/sellerList")
     public String getSellers(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -169,6 +173,16 @@ public class UserController {
             orderService.save(order);
         }
         return "redirect:/orderList";
+    }
+
+    @ModelAttribute(name = "subtotal")
+    public double getTotalAmount() {
+        return cartItemService.getSubTotal();
+    }
+
+    @ModelAttribute(name = "numberOfProducts")
+    public int getNumberOfProducts() {
+        return cartItemService.getNumberOfProductsByUser();
     }
 
 }

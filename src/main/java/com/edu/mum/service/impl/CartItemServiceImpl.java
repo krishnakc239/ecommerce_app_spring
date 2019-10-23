@@ -25,10 +25,10 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepository.save(cartItem);
     }
 
-    @Override
-    public List<CartItem> findAllByUser() {
-        return cartItemRepository.findByUser_Id(sessionUtils.getCurrentUser().getId());
-    }
+//    @Override
+//    public List<CartItem> findAllByUser() {
+//        return cartItemRepository.findByUser_Id(sessionUtils.getCurrentUser().getId());
+//    }
 
     @Override
     public void delete(CartItem cartItem) {
@@ -51,7 +51,10 @@ public class CartItemServiceImpl implements CartItemService {
         if (SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")){
             return 0;
         }
-        return this.findAllByUserAndDelivered(sessionUtils.getCurrentUser(),false).size();
+        return this.findAllByUserAndDelivered(sessionUtils.getCurrentUser(), false)
+                .stream()
+                .map(x -> x.getQuantity())
+                .reduce(0, Integer::sum);
     }
 
     public void deleteById(Long aLong) {

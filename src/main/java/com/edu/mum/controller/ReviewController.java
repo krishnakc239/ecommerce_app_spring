@@ -3,13 +3,13 @@ package com.edu.mum.controller;
 import com.edu.mum.domain.Product;
 import com.edu.mum.domain.Review;
 import com.edu.mum.domain.User;
+import com.edu.mum.service.CartItemService;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.service.ReviewService;
 import com.edu.mum.service.UserService;
 import com.edu.mum.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +37,9 @@ public class ReviewController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CartItemService cartItemService;
 
 
     @PostMapping(value = "/review/create")
@@ -98,6 +101,16 @@ public class ReviewController {
         review.setApprove(true);
         reviewService.save(review);
         return "redirect:/reviewList";
+    }
+
+    @ModelAttribute(name = "subtotal")
+    public double getTotalAmount() {
+        return cartItemService.getSubTotal();
+    }
+
+    @ModelAttribute(name = "numberOfProducts")
+    public int getNumberOfProducts() {
+        return cartItemService.getNumberOfProductsByUser();
     }
 
 

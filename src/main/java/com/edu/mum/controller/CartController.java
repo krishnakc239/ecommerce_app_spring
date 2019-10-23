@@ -23,22 +23,22 @@ import java.util.Optional;
 //@SessionAttributes("cartList")
 public class CartController {
 
-    Map<String, ShipCountry> shipCountries = new HashMap<>();
     @Autowired
     private SessionUtils sessionUtils;
     @Autowired
     private CartItemService cartItemService;
     @Autowired
     private ProductService productService;
-
     @Autowired
     private OrderService orderService;
     @Autowired
     private CreditCardService creditCardService;
-
     @Autowired
     private UserService userService;
+
+    Map<String, ShipCountry> shipCountries = new HashMap<>();
     Double shippingCost = 0.0;
+    Double rewardsUsed = 0.0;
 
     @ModelAttribute(name = "subtotal")
     public double getTotalAmount() {
@@ -57,30 +57,21 @@ public class CartController {
 
     @GetMapping("/addToCart/{pid}")
     public String addToCart(@PathVariable Long pid) {
-        Optional<Product> product = productService.findById(pid);
-        if (product.isPresent()) {
-            Product p = product.get();
-            if (p.getStock() > 0) {
-                p.setStock(p.getStock() - 1);//decrease stock of product
-                CartItem cartItem = new CartItem();
-                cartItem.setProduct(p);
-                cartItem.setQuantity(1);
-                cartItem.setUser(sessionUtils.getCurrentUser());
-                productService.save(p);
-                cartItemService.save(cartItem);
-            } else {
-                //out of stock
-                return "/";
-            }
-        }
+        return addProductToCart(pid, 1);
+    }
 
-        return "redirect:/shoppingCart";
+    @PostMapping("/addToCart/{pid}")
+    public String addToCart(@PathVariable Long pid, @ModelAttribute(name = "simpleBean") SimpleBean simpleBean) {
+        System.out.println(simpleBean);
+        int quantity = simpleBean.getIntValue();
+        return addProductToCart(pid, quantity);
     }
 
     @GetMapping("/shoppingCart")
     public String productAdded(Model model, @ModelAttribute(name = "country") ShipCountry country) {
         model.addAttribute("shipping", shippingCost);
-        model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
+        model.addAttribute("rewards", rewardsUsed);
+        model.addAttribute("total", cartItemService.getSubTotal() + shippingCost - rewardsUsed);
         return "product/cart";
     }
 
@@ -99,6 +90,7 @@ public class CartController {
         model.addAttribute("pager",pager);
         return "product/shop";
     }
+
 
     @ModelAttribute("shipCountries")
     public Map shipCountries() {
@@ -126,7 +118,16 @@ public class CartController {
     @GetMapping("/removeItem/{iid}")
     public String removeItem(@PathVariable Long iid) {
         System.out.println("/removeItem iid:" + iid);
-        cartItemService.deleteById(iid);
+
+        Optional<CartItem> o = cartItemService.findById(iid);
+        if (o.isPresent()) {
+            CartItem c = o.get();
+            Product p = productService.findById(c.getProduct().getId()).get();
+            p.setStock(p.getStock() + c.getQuantity());
+            cartItemService.deleteById(iid);
+            productService.save(p);
+        }
+
         return "redirect:/shoppingCart";
     }
 
@@ -235,7 +236,7 @@ public class CartController {
         order.getUser().setPoints(prevPoint);
         //update reward points in session user
         User currentuser = sessionUtils.getCurrentUser();
-        currentuser.setPoints(prevPoint);
+        currentuser.setPoints(prevPoint - rewardsUsed);
         session.setAttribute("loggedInUser",currentuser);
         orderService.save(order);
     }
@@ -247,6 +248,48 @@ public class CartController {
             c.setDelevered(true);
             cartItemService.save(c);
         }
+    }
+
+    String addProductToCart(Long pid, int quantity) {
+        Optional<Product> product = productService.findById(pid);
+        if (product.isPresent()) {
+            boolean cartItemUpdated = false;//update current item in cart
+            for (CartItem i : cartItemService.findAllByUserAndDelivered(sessionUtils.getCurrentUser(), false)) {
+                if (i.getProduct().getId() == pid) {
+                    Product p = product.get();
+                    if (p.getStock() >= quantity) {
+                        p.setStock(p.getStock() - quantity);//decrease stock of product
+                        i.setQuantity(i.getQuantity() + quantity);
+                        cartItemService.save(i);
+                    }
+                    cartItemUpdated = true;
+                }
+            }
+            if (!cartItemUpdated) {
+                Product p = product.get();
+                if (p.getStock() >= quantity) {
+                    p.setStock(p.getStock() - quantity);//decrease stock of product
+                    CartItem cartItem = new CartItem();
+                    cartItem.setProduct(p);
+                    cartItem.setQuantity(quantity);
+                    cartItem.setUser(sessionUtils.getCurrentUser());
+                    productService.save(p);
+                    cartItemService.save(cartItem);
+                } else {
+                    //out of stock
+                    return "/";
+                }
+            }
+        }
+
+        return "redirect:/shoppingCart";
+    }
+
+    @PostMapping("/useRewards")
+    public String useRewards() {
+        System.out.println("useRewards");
+        rewardsUsed = sessionUtils.getCurrentUser().getPoints();
+        return "redirect:/shoppingCart";
     }
 
 }

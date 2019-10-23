@@ -10,7 +10,7 @@ public interface CartItemService {
 
     void save(CartItem cartItem);
 
-    List<CartItem> findAllByUser();
+    //List<CartItem> findAllByUser();
     void delete(CartItem cartItem);
 
     Double getSubTotal();
