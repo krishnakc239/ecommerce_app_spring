@@ -174,7 +174,10 @@ public class CartController {
     @PostMapping("/placeOrder")
     public String getPaymentPage(@ModelAttribute Order order,RedirectAttributes redirectAttributes){
         order.setUser(sessionUtils.getCurrentUser());
-        order.setTotalAmount(cartItemService.getSubTotal() + shippingCost);
+        order.setSubTotal(cartItemService.getSubTotal());
+        order.setShipping(shippingCost);
+        order.setRewardsUsed(rewardsUsed);
+        order.setTotalAmount(cartItemService.getSubTotal() + shippingCost - rewardsUsed);
         order.setStatus("Ordered");
         orderService.save(order);
         redirectAttributes.addFlashAttribute("order",order);
@@ -184,7 +187,8 @@ public class CartController {
     @GetMapping("/payment")
     public String  showPaymentForm(@ModelAttribute CreditCardInfo credit, Model model){
         model.addAttribute("shipping", shippingCost);
-        model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
+        model.addAttribute("rewards", rewardsUsed);
+        model.addAttribute("total", cartItemService.getSubTotal() + shippingCost - rewardsUsed);
         model.addAttribute("credit",new CreditCardInfo());
         return "product/payment";
     }
@@ -238,8 +242,10 @@ public class CartController {
         //update reward points in session user
         User currentuser = sessionUtils.getCurrentUser();
         currentuser.setPoints(prevPoint - rewardsUsed);
+        rewardsUsed = 0.0;
         session.setAttribute("loggedInUser",currentuser);
         orderService.save(order);
+        //update user rewards
     }
 
     private void updateCartItemsByUser(){

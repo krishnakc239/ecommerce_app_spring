@@ -41,6 +41,9 @@ public class Order {
     private boolean paid = false;
     private String contact;
 
+    private double subTotal;
+    private double shipping;
+    private double rewardsUsed;
     private double totalAmount;
 
     public Long getId() {
@@ -129,5 +132,29 @@ public class Order {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public double getShipping() {
+        return shipping;
+    }
+
+    public void setShipping(double shipping) {
+        this.shipping = shipping;
+    }
+
+    public double getRewardsUsed() {
+        return rewardsUsed;
+    }
+
+    public void setRewardsUsed(double rewardsUsed) {
+        this.rewardsUsed = rewardsUsed;
     }
 }

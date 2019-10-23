@@ -207,12 +207,14 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <form class="button" method="POST" th:action="@{/useRewards}">
+                                                <form class="button" method="POST" th:action="@{/useRewards}"
+                                                      th:if="${numberOfProducts}>0">
                                                     <input type="submit" value="Use Rewards"/>
                                                 </form>
                                             </td>
                                             <td>
-                                                <form class="button" method="GET" th:action="@{/checkout}">
+                                                <form class="button" method="GET" th:action="@{/checkout}"
+                                                      th:if="${numberOfProducts}>0">
                                                     <input type="submit" value="Checkout"/>
                                                 </form>
                                             </td>

@@ -1,6 +1,5 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{common/masterLayout}">
 <head>
     <title>Product List</title>
@@ -91,7 +90,9 @@
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <label for="couponCode">Amount</label>
-                                        <input type="text" id="couponCode" th:value= "${total}" class="form-control" name="amount" />
+                                        <input class="form-control" id="couponCode" name="amount" th:value="${total}"
+                                               type="hidden"/>
+                                        <p th:text="${total}"></P>
                                     </div>
                                 </div>
                             </div>
@@ -143,6 +144,12 @@
                             <th>Shipping and Handling</th>
                             <td th:if="${shipping}==0">Free Shipping</td>
                             <td th:text="${shipping}" th:unless="${shipping}==0">Free Shipping</td>
+                            </td>
+                        </tr>
+
+                        <tr class="shipping">
+                            <th>Rewards Used</th>
+                            <td th:text="${rewards}">0.0</td>
                             </td>
                         </tr>
 
