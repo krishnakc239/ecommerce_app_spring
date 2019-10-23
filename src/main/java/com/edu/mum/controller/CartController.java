@@ -53,6 +53,7 @@ public class CartController {
                 cartItemService.save(cartItem);
             } else {
                 //out of stock
+                return "/";
             }
         }
 
