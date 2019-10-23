@@ -59,8 +59,8 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6">
-                    <div class="shopping-item" sec:authorize="hasRole('ROLE_BUYER')" >
+                <div class="col-sm-6" sec:authorize="hasRole('ROLE_BUYER')">
+                    <div class="shopping-item"  >
                         <a href="#">Reward - <span class="cart-amunt" th:text="${session?.loggedInUser?.points}">0.00</span> <i
                                 class="fa fa-shopping-cartItem"></i></a>
                     </div>
@@ -92,11 +92,11 @@
                         <li><a href="#" sec:authorize ="hasAnyRole('ROLE_SELLER','ROLE_ADMIN','ROLE_BUYER')" th:href="@{/dashboard}">Dashboard</a></li>
                         <li><a href="#" th:href="@{/shop}">Shop page</a></li>
                         <li><a href="single-product.html">Single product</a></li>
-                        <li><a href="#" th:href="@{/shoppingCart}">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                        <li><a href="#">Category</a></li>
-                        <li><a href="#">Others</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="#" th:href="@{/shoppingCart}" sec:authorize="hasRole('ROLE_BUYER')">Cart</a></li>
+<!--                        <li><a href="checkout.html">Checkout</a></li>-->
+<!--                        <li><a href="#">Category</a></li>-->
+<!--                        <li><a href="#">Others</a></li>-->
+<!--                        <li><a href="#">Contact</a></li>-->
                     </ul>
                             <a sec:authorize ="isAuthenticated()" style="float: right;">Welcome : <b sec:authentication="name"></b>
                                 <span sec:authentication="principal.authorities"></span></a>
