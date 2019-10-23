@@ -63,11 +63,11 @@
                             <td th:text="${o.contact}"></td>
                             <td>
                                 <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Ordered')}">Ordered</a><br>
-                                <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Shipped')}">Shipped</a><br>
                                 <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='On the way')}">On the
+                                    <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Canceled')}">Canceled</a><br>
+                                    <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Shipped')}">Shipped</a><br>
                                     way</a><br>
                                 <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Delivered')}">Delivered</a><br>
-                                <a th:href="@{order/statusChange/{id}/{status}(id=${o.id},status='Canceled')}">Canceled</a><br>
                             </td>
                         </tr>
                         </tbody>
