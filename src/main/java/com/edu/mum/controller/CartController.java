@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -188,7 +189,7 @@ public class CartController {
     }
     @PostMapping("/pay/{oid}")
     public String pay(@Valid @ModelAttribute CreditCardInfo credit,
-                      BindingResult bindingResult,@PathVariable Long oid, Model model){
+                      BindingResult bindingResult,@PathVariable Long oid, Model model,HttpSession session){
         Order order = orderService.findById(oid);
         System.out.println(credit);
         if (bindingResult.hasErrors()){
@@ -201,8 +202,10 @@ public class CartController {
                 creditCardService.updateAmount(credit);
                 order.setPaid(true);
                 updateCartItemsByUser();
-                updateUserRewardPoint(order);
+                updateUserRewardPoint(order,session);
                 model.addAttribute("order",order);
+                model.addAttribute("subtotal",cartItemService.getSubTotal());
+                model.addAttribute("numberOfProducts",cartItemService.getNumberOfProductsByUser());
                 model.addAttribute("message","Congratulation !! Your order is placed and ready to be shipped and deliver within 3 business days");
                 return "product/orderSummary";
             }else {
@@ -213,7 +216,7 @@ public class CartController {
         }
     }
 
-    private void updateUserRewardPoint(Order order){
+    private void updateUserRewardPoint(Order order, HttpSession session){
         double totalAmt = order.getTotalAmount();
         double prevPoint = order.getUser().getPoints();
         double rewardPoint = 0.00;
@@ -230,7 +233,10 @@ public class CartController {
         }
         prevPoint += rewardPoint;
         order.getUser().setPoints(prevPoint);
-        sessionUtils.getCurrentUser().setPoints(prevPoint);
+        //update reward points in session user
+        User currentuser = sessionUtils.getCurrentUser();
+        currentuser.setPoints(prevPoint);
+        session.setAttribute("loggedInUser",currentuser);
         orderService.save(order);
     }
 
