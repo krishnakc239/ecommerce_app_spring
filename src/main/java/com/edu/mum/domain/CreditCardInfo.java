@@ -1,6 +1,7 @@
 package com.edu.mum.domain;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class CreditCardInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @Range(min = 13, max = 16, message = "card number should be of 16 length")
+    @Length(min = 16, max = 16, message = "Card number should be of 16 length")
     @NotBlank
     private String cardNumber;
     @NotBlank(message = "expiry date can not be null")
@@ -25,7 +26,8 @@ public class CreditCardInfo {
     @NotNull(message = "please fill the amount value")
     private double amount;
 
-    public CreditCardInfo(){}
+    public CreditCardInfo() {
+    }
 
     public Long getId() {
         return id;
