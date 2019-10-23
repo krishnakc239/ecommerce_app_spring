@@ -45,6 +45,7 @@ public class User {
     private int active;
 
     private boolean status;
+    private double points =0.00;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "relation",
@@ -181,5 +182,13 @@ public class User {
 
     public void setFollowings(Set<User> followings) {
         this.followings = followings;
+    }
+
+    public double getPoints() {
+        return points;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
     }
 }

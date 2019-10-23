@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> findAllUsers(int page) {
-        return this.userRepository.findAll(new PageRequest(subtractPageByOne(page),3));
+        return this.userRepository.findAll(new PageRequest(subtractPageByOne(page),8));
     }
 
     @Override

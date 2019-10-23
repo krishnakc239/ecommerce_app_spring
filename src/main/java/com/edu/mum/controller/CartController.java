@@ -193,6 +193,7 @@ public class CartController {
             if (creditCard.isPresent()){
                 creditCardService.updateAmount(credit);
                 order.setPaid(true);
+                updateUserRewardPoint(order);
                 model.addAttribute("order",order);
                 model.addAttribute("message","Congratulation !! Your order is placed and ready to be shipped");
                 return "product/orderSummary";
@@ -202,6 +203,27 @@ public class CartController {
                 return "product/payment";
             }
         }
+    }
+
+    private void updateUserRewardPoint(Order order){
+        double totalAmt = order.getTotalAmount();
+        double prevPoint = order.getUser().getPoints();
+        double rewardPoint = 0.00;
+        if (totalAmt < 10){
+            rewardPoint=1;
+        }else if (totalAmt>= 10 && totalAmt < 100 ){
+            rewardPoint = 5;
+        }else if (totalAmt >=100 && totalAmt < 500){
+            rewardPoint=10;
+        }else if (totalAmt >=500 && totalAmt < 1000){
+            rewardPoint=15;
+        }else {
+            rewardPoint =20;
+        }
+        prevPoint += rewardPoint;
+        order.getUser().setPoints(prevPoint);
+        sessionUtils.getCurrentUser().setPoints(prevPoint);
+        orderService.save(order);
     }
 
 

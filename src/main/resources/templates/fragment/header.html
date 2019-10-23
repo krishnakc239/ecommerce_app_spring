@@ -60,6 +60,10 @@
                 </div>
 
                 <div class="col-sm-6">
+                    <div class="shopping-item" sec:authorize="hasRole('ROLE_BUYER')" >
+                        <a href="#">Reward - <span class="cart-amunt" th:text="${session?.loggedInUser?.points}">0.00</span> <i
+                                class="fa fa-shopping-cartItem"></i></a>
+                    </div>
                     <div class="shopping-item">
                         <a href="#" th:href="@{/shoppingCart}">Cart - <span class="cart-amunt"
                                                                             th:text="${subtotal}">$0</span> <i
