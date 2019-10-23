@@ -36,7 +36,7 @@ public class Order {
     @JoinColumn(name = "shipping_addr_id")
     private Address shippingAddress;
 
-    private String status;
+    private String status ="Ordered";
     @Column
     private boolean paid = false;
     private String contact;
