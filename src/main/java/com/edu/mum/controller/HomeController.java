@@ -1,6 +1,7 @@
 package com.edu.mum.controller;
 
 import com.edu.mum.domain.Product;
+import com.edu.mum.service.AdService;
 import com.edu.mum.service.CartItemService;
 import com.edu.mum.service.ProductService;
 import com.edu.mum.util.Pager;
@@ -22,6 +23,9 @@ public class HomeController {
     private ProductService productService;
 
     @Autowired
+    private AdService adService;
+
+    @Autowired
     private CartItemService cartItemService;
 
     @Autowired
@@ -33,6 +37,7 @@ public class HomeController {
         Pager pager = new Pager(products);
         model.addAttribute("pager", pager);
         session.setAttribute("loggedInUser",sessionUtils.getCurrentUser());
+        model.addAttribute("adsList",adService.findAllAds());
         return "home/index";
     }
 

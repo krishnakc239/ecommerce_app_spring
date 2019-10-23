@@ -3,7 +3,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" >
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -26,35 +26,12 @@
                 </div>
             </div>
 
-            <div class="item">
-                <img src="img/h4-slide2.png" alt="Chicago" style="width:100%;">
+            <div class="item"  th:each="ad:${adsList}">
+                <img th:src="@{${'/uploads/images/'+ad.image}}" alt="Los Angeles" style="width:100%;">
                 <div class="caption-group">
-                    <h2 class="caption title">
-                        by one, get one <span class="primary">50% <strong>off</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">school supplies & backpacks.*</h4>
-                    <a class="caption button-radius" href="#"><span class="icon"></span>Shop now</a>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="img/h4-slide3.png" alt="New York" style="width:100%;">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        Apple <span class="primary">Store <strong>Ipod</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">Select Item</h4>
-                    <a class="caption button-radius" href="#"><span class="icon"></span>Shop now</a>
-                </div>
-            </div>
-            <div class="item">
-                <img src="img/h4-slide4.png" alt="New York" style="width:100%;">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        Apple <span class="primary">Store <strong>Ipod</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">& Phone</h4>
-                    <a class="caption button-radius" href="#"><span class="icon"></span>Shop now</a>
+                    <h2 th:text="${ad.title}" class="caption title"></h2>
+                    <h4 th:text="${ad.subTitle}" class="caption subtitle"></h4>
+                    <a class="caption button-radius" th:href= "${ad.link}"><span class="icon"></span>Shop now</a>
                 </div>
             </div>
 

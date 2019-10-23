@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/masterLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <div class="row">
+            <div th:insert="fragment/sidebar :: sidebar"></div>
+                <div class="col-md-9">
+                    <form action="#" th:action="@{/addAdvertisement}" th:object="${ad}" method="post" enctype="multipart/form-data" class="form col-md-7 col-md-offset-1">
+
+                        <h1>Add advertisement</h1>
+                        <div class="form-group">
+                            <label>Title:</label>
+                            <input type="text" th:field="*{title}" th:class="${#fields.hasErrors('title') ? 'form-control is-invalid' : 'form-control'}"/>
+                            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>SubTitle:</label>
+                            <input type="text" th:field="*{subTitle}" th:class="${#fields.hasErrors('subTitle') ? 'form-control is-invalid' : 'form-control'}"/>
+                            <div th:if="${#fields.hasErrors('subTitle')}" th:errors="*{subTitle}" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Link:</label>
+                            <input type="text" th:field="*{link}" th:class="${#fields.hasErrors('link') ? 'form-control is-invalid' : 'form-control'}"/>
+                            <div th:if="${#fields.hasErrors('link')}" th:errors="*{link}" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            Select Product Image: <input type="file" name="file">
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <input type="submit" class="btn mybtn" value="Add Ad" />
+                        </div><!-- Submit Button -->
+
+                    </form>
+                </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+</body>
+</html>

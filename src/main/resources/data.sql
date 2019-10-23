@@ -33,4 +33,4 @@ insert into credit values(null, 20000, 1234567891234567, 'c02', '12/24');
 insert into credit values(null, 20000, 2234567891234567, 'c02', '12/24');
 insert into credit values(null, 20000, 3234567891234567, 'c02', '12/24');
 
-
+insert into ad values(null,'h4-slide.png','https://www.thymeleaf.org','this is a subtitle','this is a title');
