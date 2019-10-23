@@ -1,10 +1,7 @@
 package com.edu.mum.controller;
 
 import com.edu.mum.domain.*;
-import com.edu.mum.service.CartItemService;
-import com.edu.mum.service.CreditCardService;
-import com.edu.mum.service.OrderService;
-import com.edu.mum.service.ProductService;
+import com.edu.mum.service.*;
 import com.edu.mum.util.Pager;
 import com.edu.mum.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 //@SessionAttributes("cartList")
@@ -38,7 +34,25 @@ public class CartController {
     private OrderService orderService;
     @Autowired
     private CreditCardService creditCardService;
+
+    @Autowired
+    private UserService userService;
     Double shippingCost = 0.0;
+
+    @ModelAttribute(name = "subtotal")
+    public double getTotalAmount() {
+        return cartItemService.getSubTotal();
+    }
+
+    @ModelAttribute(name = "numberOfProducts")
+    public int getNumberOfProducts() {
+        return cartItemService.getNumberOfProductsByUser();
+    }
+
+    @ModelAttribute(name = "cartList")
+    public List<CartItem> getCartItemList() {
+        return cartItemService.findAllByUserAndDelivered(sessionUtils.getCurrentUser(),false);
+    }
 
     @GetMapping("/addToCart/{pid}")
     public String addToCart(@PathVariable Long pid) {
@@ -64,9 +78,6 @@ public class CartController {
 
     @GetMapping("/shoppingCart")
     public String productAdded(Model model, @ModelAttribute(name = "country") ShipCountry country) {
-        model.addAttribute("cartList", cartItemService.findAllByUserAndDelivered(sessionUtils.getCurrentUser(),false));
-        model.addAttribute("numberOfProducts", cartItemService.getNumberOfProductsByUser());
-        model.addAttribute("subtotal", cartItemService.getSubTotal());
         model.addAttribute("shipping", shippingCost);
         model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
         return "product/cart";
@@ -86,11 +97,6 @@ public class CartController {
         Pager pager = new Pager(productList);
         model.addAttribute("pager",pager);
         return "product/shop";
-    }
-
-    @ModelAttribute(name = "numberOfProducts")
-    public int getNumberOfProducts() {
-        return cartItemService.getNumberOfProductsByUser();
     }
 
     @ModelAttribute("shipCountries")
@@ -166,8 +172,8 @@ public class CartController {
     @PostMapping("/placeOrder")
     public String getPaymentPage(@ModelAttribute Order order,RedirectAttributes redirectAttributes){
         order.setUser(sessionUtils.getCurrentUser());
-//        order.setCartItemList(cartItemService.findAllByUser());
         order.setTotalAmount(cartItemService.getSubTotal() + shippingCost);
+        order.setStatus("Ordered");
         orderService.save(order);
         redirectAttributes.addFlashAttribute("order",order);
         return "redirect:/payment";
@@ -175,9 +181,7 @@ public class CartController {
 
     @GetMapping("/payment")
     public String  showPaymentForm(@ModelAttribute CreditCardInfo credit, Model model){
-        model.addAttribute("subtotal", cartItemService.getSubTotal());
         model.addAttribute("shipping", shippingCost);
-//        model.addAttribute("order", model.asMap().get("order"));
         model.addAttribute("total", cartItemService.getSubTotal() + shippingCost);
         model.addAttribute("credit",new CreditCardInfo());
         return "product/payment";
@@ -199,7 +203,7 @@ public class CartController {
                 updateCartItemsByUser();
                 updateUserRewardPoint(order);
                 model.addAttribute("order",order);
-                model.addAttribute("message","Congratulation !! Your order is placed and ready to be shipped");
+                model.addAttribute("message","Congratulation !! Your order is placed and ready to be shipped and deliver within 3 business days");
                 return "product/orderSummary";
             }else {
                 model.addAttribute("message","This credit card is not valid");
