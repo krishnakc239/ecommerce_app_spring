@@ -23,7 +23,7 @@ public class Product {
     private Double price;
 
     @Column(columnDefinition = "integer default 1")
-    private int stock;
+    private int stock = 1;
 
     private String coverImage;
     @NotBlank(message = "Please provide the product description")

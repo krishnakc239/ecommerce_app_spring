@@ -200,13 +200,15 @@ public class ProductController {
             System.out.println(u.getEmail());
             SendTo += u.getEmail() + ',';
         }
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(SendTo);
+        if (!SendTo.equals("")) {
+            SimpleMailMessage msg = new SimpleMailMessage();
+            msg.setTo(SendTo);
 
-        msg.setSubject("New Product Added");
-        msg.setText("Hi,\nDear Customer, A new product is added named " + product.getName() + "\nCheck out website to see details");
+            msg.setSubject("New Product Added");
+            msg.setText("Hi,\nDear Customer, A new product is added named " + product.getName() + "\nCheck out website to see details");
 
-        javaMailSender.send(msg);
+            javaMailSender.send(msg);
+        }
 
     }
 

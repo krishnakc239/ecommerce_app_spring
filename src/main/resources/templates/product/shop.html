@@ -33,7 +33,8 @@
                         <h2><a href="../single-product.html" th:text="${product.name}"></a></h2>
 
                         <div class="product-carousel-price">
-                            <ins th:text="'$'+${product.price}"></ins> <del>$100.00</del>
+                            <ins th:text="'$'+${product.price}"></ins>
+                            <del th:text="'$'+${product.price*1.2}">$100.00</del>
                         </div>
                     </div>
                 </div>
